@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#09090d">
+  <title>WKORA FLOW — Painel</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #08080c;
+      --panel: #101016;
+      --panel-2: #15151d;
+      --panel-3: #1b1b24;
+      --border: rgba(255,255,255,.08);
+      --text: #f7f7fa;
+      --muted: #92929e;
+      --purple: #8b5cf6;
+      --purple-2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --radius: 18px;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Manrope", sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================
+       GATE
+    ========================= */
+
+    #gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(139,92,246,.16), transparent 38%),
+        var(--bg);
+    }
+
+    .gate-card {
+      width: 100%;
+      max-width: 470px;
+      background: rgba(16,16,22,.96);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 30px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.45);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .brand-logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--purple), #5b21b6);
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 15px 40px rgba(139,92,246,.25);
+    }
+
+    .brand h1 {
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    .brand p {
+      color: var(--muted);
+      margin-top: 7px;
+      font-size: 14px;
+    }
+
+    .gate-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #0b0b10;
+      padding: 5px;
+      border-radius: 13px;
+      margin-bottom: 22px;
+    }
+
+    .gate-tab {
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      padding: 11px;
+      font-weight: 700;
+    }
+
+    .gate-tab.active {
+      background: var(--panel-3);
+      color: white;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #c9c9d2;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #0b0b10;
+      color: white;
+      outline: none;
+      border-radius: 12px;
+      padding: 13px 14px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(139,92,246,.7);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.1);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--purple), #6d28d9);
+      color: white;
+      font-weight: 800;
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .secondary-btn {
+      border: 1px solid var(--border);
+      background: var(--panel-3);
+      color: white;
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-weight: 700;
+    }
+
+    .danger-btn {
+      border: 1px solid rgba(248,113,113,.2);
+      background: rgba(248,113,113,.08);
+      color: #fca5a5;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-weight: 700;
+    }
+
+    .gate-info {
+      margin-top: 17px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .message {
+      padding: 11px 13px;
+      border-radius: 11px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      background: rgba(248,113,113,.09);
+      border: 1px solid rgba(248,113,113,.18);
+      color: #fca5a5;
+    }
+
+    .message.success {
+      background: rgba(52,211,153,.09);
+      border: 1px solid rgba(52,211,153,.18);
+      color: #6ee7b7;
+    }
+
+    /* =========================
+       APP
+    ========================= */
+
+    #app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      flex-shrink: 0;
+      min-height: 100vh;
+      background: #0c0c11;
+      border-right: 1px solid var(--border);
+      padding: 22px 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .side-brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 5px 9px 25px;
+    }
+
+    .side-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--purple), #5b21b6);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .side-brand strong {
+      font-size: 15px;
+    }
+
+    .side-brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      padding: 12px 13px;
+      border-radius: 11px;
+      font-weight: 700;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: rgba(139,92,246,.12);
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+    }
+
+    .user-mini {
+      padding: 13px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: 14px;
+      margin-bottom: 9px;
+    }
+
+    .user-mini strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .user-mini span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: #aaaab5;
+      padding: 11px;
+      border-radius: 11px;
+      font-weight: 700;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 72px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: rgba(8,8,12,.88);
+      backdrop-filter: blur(15px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar h2 {
+      font-size: 18px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .role-badge {
+      padding: 7px 10px;
+      border-radius: 9px;
+      background: rgba(139,92,246,.12);
+      color: var(--purple-2);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .content {
+      padding: 28px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-head {
+      margin-bottom: 23px;
+    }
+
+    .page-head h1 {
+      font-size: 27px;
+      margin-bottom: 6px;
+    }
+
+    .page-head p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* =========================
+       DASHBOARD
+    ========================= */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 19px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .stat-number {
+      margin-top: 10px;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.4fr .8fr;
+      gap: 17px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 17px;
+    }
+
+    .card-title h3 {
+      font-size: 15px;
+    }
+
+    .request-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .request-item:last-child {
+      border-bottom: 0;
+    }
+
+    .request-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .request-name {
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .request-service {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .request-date {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .empty {
+      padding: 28px 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       REQUESTS
+    ========================= */
+
+    .request-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 17px;
+      align-items: start;
+    }
+
+    .request-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .request-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 16px;
+    }
+
+    .request-card.selected {
+      border-color: rgba(139,92,246,.55);
+      box-shadow: 0 0 0 1px rgba(139,92,246,.1);
+    }
+
+    .request-card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .request-card h3 {
+      font-size: 14px;
+    }
+
+    .request-card p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .request-card-actions {
+      margin-top: 13px;
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 5px 8px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .status.novo {
+      background: rgba(96,165,250,.1);
+      color: #93c5fd;
+    }
+
+    .status.andamento {
+      background: rgba(251,191,36,.1);
+      color: #fcd34d;
+    }
+
+    .status.concluido {
+      background: rgba(52,211,153,.1);
+      color: #6ee7b7;
+    }
+
+    .source {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 9px;
+      color: var(--muted);
+      padding: 4px 7px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    .request-detail {
+      min-height: 400px;
+    }
+
+    .detail-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .detail-head h2 {
+      font-size: 19px;
+    }
+
+    .detail-head p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .detail-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .info-box {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .info-box small {
+      color: var(--muted);
+      font-size: 10px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .info-box strong {
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    .detail-text {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 15px;
+      line-height: 1.6;
+      color: #d4d4dc;
+      font-size: 13px;
+      white-space: pre-wrap;
+      margin-bottom: 17px;
+    }
+
+    .reply-box {
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+    }
+
+    .reply-box h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .reply-box textarea {
+      width: 100%;
+      min-height: 115px;
+      resize: vertical;
+      background: #0b0b10;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 12px;
+      padding: 13px;
+      outline: none;
+    }
+
+    .reply-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 9px;
+    }
+
+    .reply-actions button {
+      width: auto;
+    }
+
+    .reply-history {
+      margin-top: 20px;
+    }
+
+    .reply-history h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .reply-message {
+      padding: 12px;
+      border-radius: 11px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .reply-message strong {
+      font-size: 11px;
+    }
+
+    .reply-message span {
+      float: right;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .reply-message p {
+      margin-top: 7px;
+      color: #d0d0d8;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    /* =========================
+       TEAM
+    ========================= */
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 17px;
+    }
+
+    .member {
+      padding: 14px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      margin-bottom: 9px;
+    }
+
+    .member-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .member strong {
+      font-size: 13px;
+    }
+
+    .member small {
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .member-actions {
+      display: flex;
+      gap: 7px;
+      margin-top: 11px;
+    }
+
+    .member-actions button {
+      flex: 1;
+    }
+
+    .owner-only {
+      display: none;
+    }
+
+    body.owner .owner-only {
+      display: block;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    @media (max-width: 950px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .dashboard-grid,
+      .request-layout,
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar {
+        position: fixed;
+        z-index: 50;
+        left: -270px;
+        top: 0;
+        transition: .25s ease;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .topbar h2 {
+        font-size: 15px;
+      }
+
+      .content {
+        padding: 18px 14px 30px;
+      }
+
+      .stats {
+        gap: 9px;
+      }
+
+      .stat {
+        padding: 15px;
+      }
+
+      .stat-number {
+        font-size: 25px;
+      }
+
+      .detail-info {
+        grid-template-columns: 1fr;
+      }
+
+      .gate-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN / CADASTRO
+========================= -->
+
+<section id="gate">
+
+  <div class="gate-card">
+
+    <div class="brand">
+      <div class="brand-logo">WK</div>
+      <h1>WKORA FLOW</h1>
+      <p>Painel interno da equipe</p>
+    </div>
+
+    <div class="gate-tabs">
+      <button class="gate-tab active" id="loginTab" onclick="showGate('login')">
+        Já tenho acesso
+      </button>
+
+      <button class="gate-tab" id="registerTab" onclick="showGate('register')">
+        Sou novo aqui
+      </button>
+    </div>
+
+    <div id="gateMessage"></div>
+
+    <!-- LOGIN -->
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label for="loginName">Nome</label>
+        <input
+          id="loginName"
+          type="text"
+          placeholder="Digite seu nome"
+          autocomplete="name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="loginCode">Código de acesso</label>
+        <input
+          id="loginCode"
+          type="password"
+          placeholder="Digite o código"
+          autocomplete="off"
+          required
+        >
+      </div>
+
+      <button class="primary-btn" type="submit">
+        Entrar no painel
+      </button>
+
+    </form>
+
+    <!-- CADASTRO -->
+
+    <form id="registerForm" class="hidden">
+
+      <div class="field">
+        <label for="registerName">Nome completo</label>
+        <input
+          id="registerName"
+          type="text"
+          placeholder="Seu nome"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="registerEmail">E-mail</label>
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="seu@email.com"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="registerRole">Cargo</label>
+
+        <select id="registerRole" required>
+          <option value="">Selecione seu cargo</option>
+          <option value="suporte">Suporte</option>
+          <option value="desenvolvedor">Desenvolvedor</option>
+          <option value="marketing">Marketing</option>
+          <option value="design">Design</option>
+          <option value="outro">Outro</option>
+        </select>
+
+      </div>
+
+      <button class="primary-btn" type="submit">
+        Enviar cadastro
+      </button>
+
+    </form>
+
+    <div class="gate-info">
+      O acesso da equipe será protegido pelo sistema oficial de autenticação
+      quando conectarmos o Firebase.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     APP
+========================= -->
+
+<section id="app" class="hidden">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="side-brand">
+      <div class="side-logo">WK</div>
+
+      <div>
+        <strong>WKORA FLOW</strong>
+        <small>Painel interno</small>
+      </div>
+    </div>
+
+    <nav class="nav">
+
+      <button
+        class="active"
+        data-page="dashboard"
+        onclick="navigate('dashboard')"
+      >
+        Visão geral
+      </button>
+
+      <button
+        data-page="requests"
+        onclick="navigate('requests')"
+      >
+        Solicitações
+      </button>
+
+      <button
+        data-page="team"
+        onclick="navigate('team')"
+      >
+        Equipe
+      </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <div class="user-mini">
+        <strong id="sidebarUser">Equipe</strong>
+        <span id="sidebarRole">Membro</span>
+      </div>
+
+      <button class="logout-btn" onclick="logout()">
+        Sair
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+        <h2 id="pageTitle">Visão geral</h2>
+      </div>
+
+      <div class="topbar-right">
+        <span class="role-badge" id="topRole">EQUIPE</span>
+      </div>
+
+    </header>
+
+
+    <div class="content">
+
+      <!-- =====================
+           DASHBOARD
+      ====================== -->
+
+      <section id="page-dashboard" class="page active">
+
+        <div class="page-head">
+          <h1>Visão geral</h1>
+          <p>Acompanhe o movimento do WKORA FLOW.</p>
+        </div>
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-label">Solicitações novas</div>
+            <div class="stat-number" id="statNew">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Em andamento</div>
+            <div class="stat-number" id="statProgress">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Concluídas</div>
+            <div class="stat-number" id="statDone">0</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-label">Cadastros pendentes</div>
+            <div class="stat-number" id="statPending">0</div>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>Últimas solicitações</h3>
+
+              <button
+                class="secondary-btn"
+                onclick="navigate('requests')"
+              >
+                Ver todas
+              </button>
+            </div>
+
+            <div id="latestRequests"></div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>Sistema</h3>
+            </div>
+
+            <div class="request-item">
+              <div class="request-name">Painel interno</div>
+              <div class="request-service">
+                Funcionando localmente
+              </div>
+            </div>
+
+            <div class="request-item">
+              <div class="request-name">Armazenamento</div>
+              <div class="request-service">
+                Dados temporários do navegador
+              </div>
+            </div>
+
+            <div class="request-item">
+              <div class="request-name">Próxima etapa</div>
+              <div class="request-service">
+                Firebase + Firestore
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================
+           SOLICITAÇÕES
+      ====================== -->
+
+      <section id="page-requests" class="page">
+
+        <div class="page-head">
+          <h1>Solicitações</h1>
+          <p>Visualize, organize e responda às solicitações.</p>
+        </div>
+
+        <div class="request-layout">
+
+          <!-- LISTA -->
+
+          <div>
+
+            <div class="card" style="margin-bottom:12px;">
+
+              <div class="card-title">
+                <h3>Solicitações</h3>
+
+                <button
+                  class="secondary-btn"
+                  onclick="openManualRequest()"
+                >
+                  + Nova
+                </button>
+              </div>
+
+              <div id="requestList" class="request-list"></div>
+
+            </div>
+
+          </div>
+
+
+          <!-- DETALHES -->
+
+          <div class="card request-detail" id="requestDetail">
+
+            <div class="empty">
+              Selecione uma solicitação para visualizar os detalhes.
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================
+           EQUIPE
+      ====================== -->
+
+      <section id="page-team" class="page">
+
+        <div class="page-head">
+          <h1>Equipe</h1>
+          <p>Gerencie os integrantes e os cadastros pendentes.</p>
+        </div>
+
+        <div class="team-grid">
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>Cadastros pendentes</h3>
+            </div>
+
+            <div id="pendingTeam"></div>
+
+          </div>
+
+
+          <div class="card">
+
+            <div class="card-title">
+              <h3>Equipe aprovada</h3>
+            </div>
+
+            <div id="approvedTeam"></div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</section>
+
+
+<script>
+/* =========================================================
+   WKORA FLOW — PAINEL V1
+   Sem window.claude
+   Sem Firebase nesta etapa
+========================================================= */
+
+
+/* =========================
+   CONFIGURAÇÃO TEMPORÁRIA
+========================= */
+
+const TEAM_CODE = "wkora-equipe-2026";
+const OWNER_CODE = "wkora-dono-2026";
+
+const SESSION_KEY = "wkora_flow_panel_session_v1";
+const REQUESTS_KEY = "wkora_flow_requests_v1";
+const TEAM_KEY = "wkora_flow_team_v1";
+
+
+/* =========================
+   ESTADO
+========================= */
+
+let session = null;
+let requests = [];
+let team = [];
+let selectedRequestId = null;
+
+
+/* =========================
+   UTILITÁRIOS
+========================= */
+
+function loadData() {
+
+  try {
+    requests = JSON.parse(
+      localStorage.getItem(REQUESTS_KEY) || "[]"
+    );
+  } catch {
+    requests = [];
+  }
+
+  try {
+    team = JSON.parse(
+      localStorage.getItem(TEAM_KEY) || "[]"
+    );
+  } catch {
+    team = [];
+  }
+
+}
+
+
+function saveRequests() {
+  localStorage.setItem(
+    REQUESTS_KEY,
+    JSON.stringify(requests)
+  );
+}
+
+
+function saveTeam() {
+  localStorage.setItem(
+    TEAM_KEY,
+    JSON.stringify(team)
+  );
+}
+
+
+function saveSession() {
+  sessionStorage.setItem(
+    SESSION_KEY,
+    JSON.stringify(session)
+  );
+}
+
+
+function getSession() {
+
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(SESSION_KEY) || "null"
+    );
+  } catch {
+    return null;
+  }
+
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+function formatDate(date) {
+
+  if (!date) return "-";
+
+  return new Date(date).toLocaleString(
+    "pt-BR",
+    {
+      dateStyle: "short",
+      timeStyle: "short"
+    }
+  );
+
+}
+
+
+function roleName(role) {
+
+  const roles = {
+    suporte: "Suporte",
+    desenvolvedor: "Desenvolvedor",
+    marketing: "Marketing",
+    design: "Design",
+    outro: "Outro",
+    dono: "Administrador"
+  };
+
+  return roles[role] || role || "Equipe";
+
+}
+
+
+function statusName(status) {
+
+  const names = {
+    novo: "Novo",
+    andamento: "Em andamento",
+    concluido: "Concluído"
+  };
+
+  return names[status] || status;
+
+}
+
+
+/* =========================
+   GATE
+========================= */
+
+function showGate(type) {
+
+  const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
+
+  const loginTab = document.getElementById("loginTab");
+  const registerTab = document.getElementById("registerTab");
+
+  clearGateMessage();
+
+  if (type === "login") {
+
+    loginForm.classList.remove("hidden");
+    registerForm.classList.add("hidden");
+
+    loginTab.classList.add("active");
+    registerTab.classList.remove("active");
+
+  } else {
+
+    loginForm.classList.add("hidden");
+    registerForm.classList.remove("hidden");
+
+    loginTab.classList.remove("active");
+    registerTab.classList.add("active");
+
+  }
+
+}
+
+
+function gateMessage(text, type = "error") {
+
+  document.getElementById("gateMessage").innerHTML =
+    `<div class="message ${type}">${escapeHTML(text)}</div>`;
+
+}
+
+
+function clearGateMessage() {
+
+  document.getElementById("gateMessage").innerHTML = "";
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+document.getElementById("loginForm").addEventListener(
+  "submit",
+  function(event) {
+
+    event.preventDefault();
+
+    const name =
+      document.getElementById("loginName").value.trim();
+
+    const code =
+      document.getElementById("loginCode").value.trim();
+
+    if (!name || !code) {
+      gateMessage("Preencha nome e código.");
+      return;
+    }
+
+    let role = null;
+
+    if (code === OWNER_CODE) {
+      role = "dono";
+    } else if (code === TEAM_CODE) {
+      role = "equipe";
+    }
+
+    if (!role) {
+      gateMessage("Código de acesso inválido.");
+      return;
+    }
+
+    session = {
+      name,
+      role,
+      loginAt: new Date().toISOString()
+    };
+
+    saveSession();
+    openPanel();
+
+  }
+);
+
+
+/* =========================
+   CADASTRO
+========================= */
+
+document.getElementById("registerForm").addEventListener(
+  "submit",
+  function(event) {
+
+    event.preventDefault();
+
+    const name =
+      document.getElementById("registerName").value.trim();
+
+    const email =
+      document.getElementById("registerEmail").value.trim();
+
+    const role =
+      document.getElementById("registerRole").value;
+
+    if (!name || !email || !role) {
+      gateMessage("Preencha todos os campos.");
+      return;
+    }
+
+    const alreadyExists = team.some(
+      member =>
+        member.email.toLowerCase() === email.toLowerCase()
+    );
+
+    if (alreadyExists) {
+      gateMessage("Esse e-mail já possui um cadastro.");
+      return;
+    }
+
+    const integrante = {
+      id: crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(),
+
+      name,
+      email,
+      role,
+
+      status: "pendente",
+
+      createdAt: new Date().toISOString()
+    };
+
+    team.push(integrante);
+
+    saveTeam();
+
+    gateMessage(
+      "Cadastro enviado. Aguarde a aprovação da equipe.",
+      "success"
+    );
+
+    document.getElementById("registerForm").reset();
+
+  }
+);
+
+
+/* =========================
+   ABRIR PAINEL
+========================= */
+
+function openPanel() {
+
+  document.getElementById("gate")
+    .classList.add("hidden");
+
+  document.getElementById("app")
+    .classList.remove("hidden");
+
+  document.getElementById("sidebarUser")
+    .textContent = session.name;
+
+  document.getElementById("sidebarRole")
+    .textContent =
+      session.role === "dono"
+        ? "Administrador"
+        : "Equipe";
+
+  document.getElementById("topRole")
+    .textContent =
+      session.role === "dono"
+        ? "ADMINISTRADOR"
+        : "EQUIPE";
+
+  if (session.role === "dono") {
+    document.body.classList.add("owner");
+  } else {
+    document.body.classList.remove("owner");
+  }
+
+  renderAll();
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+  sessionStorage.removeItem(SESSION_KEY);
+
+  session = null;
+
+  document.getElementById("app")
+    .classList.add("hidden");
+
+  document.getElementById("gate")
+    .classList.remove("hidden");
+
+  document.getElementById("loginForm").reset();
+
+  showGate("login");
+
+}
+
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+function navigate(page) {
+
+  document.querySelectorAll(".page")
+    .forEach(element => {
+      element.classList.remove("active");
+    });
+
+  document.querySelectorAll(".nav button")
+    .forEach(button => {
+      button.classList.remove("active");
+    });
+
+  const target =
+    document.getElementById("page-" + page);
+
+  const navButton =
+    document.querySelector(
+      `.nav button[data-page="${page}"]`
+    );
+
+  if (target) {
+    target.classList.add("active");
+  }
+
+  if (navButton) {
+    navButton.classList.add("active");
+  }
+
+  const titles = {
+    dashboard: "Visão geral",
+    requests: "Solicitações",
+    team: "Equipe"
+  };
+
+  document.getElementById("pageTitle")
+    .textContent = titles[page] || "WKORA FLOW";
+
+  document.getElementById("sidebar")
+    .classList.remove("open");
+
+  renderAll();
+
+}
+
+
+/* =========================
+   SIDEBAR MOBILE
+========================= */
+
+function toggleSidebar() {
+
+  document.getElementById("sidebar")
+    .classList.toggle("open");
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard() {
+
+  const newCount =
+    requests.filter(
+      r => r.status === "novo"
+    ).length;
+
+  const progressCount =
+    requests.filter(
+      r => r.status === "andamento"
+    ).length;
+
+  const doneCount =
+    requests.filter(
+      r => r.status === "concluido"
+    ).length;
+
+  const pendingCount =
+    team.filter(
+      member => member.status === "pendente"
+    ).length;
+
+  document.getElementById("statNew")
+    .textContent = newCount;
+
+  document.getElementById("statProgress")
+    .textContent = progressCount;
+
+  document.getElementById("statDone")
+    .textContent = doneCount;
+
+  document.getElementById("statPending")
+    .textContent = pendingCount;
+
+
+  const latest =
+    [...requests]
+      .sort(
+        (a,b) =>
+          new Date(b.createdAt) -
+          new Date(a.createdAt)
+      )
+      .slice(0, 6);
+
+
+  const container =
+    document.getElementById("latestRequests");
+
+  if (!latest.length) {
+
+    container.innerHTML =
+      `<div class="empty">Nenhuma solicitação ainda.</div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    latest.map(request => `
+
+      <div class="request-item">
+
+        <div class="request-top">
+
+          <div>
+            <div class="request-name">
+              ${escapeHTML(request.name)}
+            </div>
+
+            <div class="request-service">
+              ${escapeHTML(request.service)}
+            </div>
+          </div>
+
+          <span class="status ${escapeHTML(request.status)}">
+            ${escapeHTML(statusName(request.status))}
+          </span>
+
+        </div>
+
+        <div class="request-date">
+          ${formatDate(request.createdAt)}
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =========================
+   SOLICITAÇÕES
+========================= */
+
+function renderRequests() {
+
+  const container =
+    document.getElementById("requestList");
+
+  const sorted =
+    [...requests].sort(
+      (a,b) =>
+        new Date(b.createdAt) -
+        new Date(a.createdAt)
+    );
+
+
+  if (!sorted.length) {
+
+    container.innerHTML =
+      `<div class="empty">Nenhuma solicitação cadastrada.</div>`;
+
+    document.getElementById("requestDetail").innerHTML =
+      `<div class="empty">
+        Nenhuma solicitação para visualizar.
+      </div>`;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    sorted.map(request => `
+
+      <div
+        class="request-card ${
+          selectedRequestId === request.id
+            ? "selected"
+            : ""
+        }"
+        onclick="selectRequest('${request.id}')"
+      >
+
+        <div class="request-card-head">
+
+          <div>
+            <h3>${escapeHTML(request.name)}</h3>
+
+            <p>
+              ${escapeHTML(request.service)}
+            </p>
+          </div>
+
+          <span class="status ${escapeHTML(request.status)}">
+            ${escapeHTML(statusName(request.status))}
+          </span>
+
+        </div>
+
+        <div class="request-card-actions">
+
+          <span class="source">
+            ${escapeHTML(request.source || "manual")}
+          </span>
+
+          <span class="source">
+            ${formatDate(request.createdAt)}
+          </span>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+
+  if (
+    selectedRequestId &&
+    requests.some(r => r.id === selectedRequestId)
+  ) {
+
+    renderRequestDetail(selectedRequestId);
+
+  } else {
+
+    selectedRequestId = sorted[0].id;
+
+    renderRequestDetail(selectedRequestId);
+
+  }
+
+}
+
+
+function selectRequest(id) {
+
+  selectedRequestId = id;
+
+  renderRequests();
+
+}
+
+
+function renderRequestDetail(id) {
+
+  const request =
+    requests.find(
+      r => r.id === id
+    );
+
+  const container =
+    document.getElementById("requestDetail");
+
+
+  if (!request) {
+
+    container.innerHTML =
+      `<div class="empty">
+        Solicitação não encontrada.
+      </div>`;
+
+    return;
+
+  }
+
+
+  const replies =
+    Array.isArray(request.replies)
+      ? request.replies
+      : [];
+
+
+  container.innerHTML = `
+
+    <div class="detail-head">
+
+      <div>
+
+        <h2>
+          ${escapeHTML(request.name)}
+        </h2>
+
+        <p>
+          Solicitação criada em
+          ${formatDate(request.createdAt)}
+        </p>
+
+      </div>
+
+      <span class="status ${escapeHTML(request.status)}">
+        ${escapeHTML(statusName(request.status))}
+      </span>
+
+    </div>
+
+
+    <div class="detail-info">
+
+      <div class="info-box">
+        <small>Contato</small>
+        <strong>
+          ${escapeHTML(request.contact)}
+        </strong>
+      </div>
+
+      <div class="info-box">
+        <small>Serviço</small>
+        <strong>
+          ${escapeHTML(request.service)}
+        </strong>
+      </div>
+
+      <div class="info-box">
+        <small>Origem</small>
+        <strong>
+          ${escapeHTML(request.source || "manual")}
+        </strong>
+      </div>
+
+      <div class="info-box">
+        <small>Status</small>
+
+        <select
+          onchange="changeRequestStatus('${request.id}', this.value)"
+          style="
+            width:100%;
+            background:#0b0b10;
+            border:1px solid var(--border);
+            color:white;
+            border-radius:8px;
+            padding:7px;
+          "
+        >
+
+          <option
+            value="novo"
+            ${request.status === "novo" ? "selected" : ""}
+          >
+            Novo
+          </option>
+
+          <option
+            value="andamento"
+            ${request.status === "andamento" ? "selected" : ""}
+          >
+            Em andamento
+          </option>
+
+          <option
+            value="concluido"
+            ${request.status === "concluido" ? "selected" : ""}
+          >
+            Concluído
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="detail-text">
+      ${escapeHTML(request.details || "Nenhum detalhe informado.")}
+    </div>
+
+
+    <div class="reply-box">
+
+      <h3>Responder cliente</h3>
+
+      <textarea
+        id="replyText"
+        placeholder="Digite a resposta para o cliente..."
+      ></textarea>
+
+      <div class="reply-actions">
+
+        <button
+          class="danger-btn"
+          onclick="deleteRequest('${request.id}')"
+        >
+          Excluir
+        </button>
+
+        <button
+          class="primary-btn"
+          style="width:auto;"
+          onclick="sendReply('${request.id}')"
+        >
+          Enviar resposta
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="reply-history">
+
+      <h3>Histórico de respostas</h3>
+
+      ${
+        replies.length
+          ? replies.map(reply => `
+
+            <div class="reply-message">
+
+              <strong>
+                ${escapeHTML(reply.author)}
+              </strong>
+
+              <span>
+                ${formatDate(reply.createdAt)}
+              </span>
+
+              <p>
+                ${escapeHTML(reply.text)}
+              </p>
+
+            </div>
+
+          `).join("")
+          : `<div class="empty">
+              Nenhuma resposta enviada ainda.
+             </div>`
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================
+   MUDAR STATUS
+========================= */
+
+function changeRequestStatus(id, status) {
+
+  const request =
+    requests.find(
+      r => r.id === id
+    );
+
+  if (!request) return;
+
+  request.status = status;
+
+  request.updatedAt =
+    new Date().toISOString();
+
+  saveRequests();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   RESPONDER
+========================= */
+
+function sendReply(id) {
+
+  const textarea =
+    document.getElementById("replyText");
+
+  if (!textarea) return;
+
+  const text =
+    textarea.value.trim();
+
+  if (!text) {
+
+    alert("Digite uma resposta antes de enviar.");
+
+    return;
+
+  }
+
+
+  const request =
+    requests.find(
+      r => r.id === id
+    );
+
+  if (!request) return;
+
+
+  if (!Array.isArray(request.replies)) {
+    request.replies = [];
+  }
+
+
+  request.replies.push({
+
+    id:
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(),
+
+    author:
+      session
+        ? session.name
+        : "Equipe WKORA",
+
+    text,
+
+    createdAt:
+      new Date().toISOString()
+
+  });
+
+
+  request.status = "andamento";
+
+  request.updatedAt =
+    new Date().toISOString();
+
+
+  saveRequests();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   EXCLUIR SOLICITAÇÃO
+========================= */
+
+function deleteRequest(id) {
+
+  const request =
+    requests.find(
+      r => r.id === id
+    );
+
+  if (!request) return;
+
+
+  const confirmed =
+    confirm(
+      "Deseja realmente excluir esta solicitação?"
+    );
+
+  if (!confirmed) return;
+
+
+  requests =
+    requests.filter(
+      r => r.id !== id
+    );
+
+
+  selectedRequestId = null;
+
+  saveRequests();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   NOVA SOLICITAÇÃO MANUAL
+========================= */
+
+function openManualRequest() {
+
+  const name =
+    prompt("Nome do cliente:");
+
+  if (!name) return;
+
+
+  const contact =
+    prompt("Contato do cliente:");
+
+  if (!contact) return;
+
+
+  const service =
+    prompt("Serviço solicitado:");
+
+  if (!service) return;
+
+
+  const details =
+    prompt("Detalhes da solicitação:") || "";
+
+
+  const request = {
+
+    id:
+      crypto.randomUUID
+        ? crypto.randomUUID()
+        : Date.now().toString(),
+
+    name,
+    contact,
+    service,
+    details,
+
+    source: "manual",
+
+    status: "novo",
+
+    replies: [],
+
+    createdAt:
+      new Date().toISOString(),
+
+    updatedAt:
+      new Date().toISOString()
+
+  };
+
+
+  requests.unshift(request);
+
+  saveRequests();
+
+  selectedRequestId = request.id;
+
+  navigate("requests");
+
+}
+
+
+/* =========================
+   EQUIPE
+========================= */
+
+function renderTeam() {
+
+  const pendingContainer =
+    document.getElementById("pendingTeam");
+
+  const approvedContainer =
+    document.getElementById("approvedTeam");
+
+
+  const pending =
+    team.filter(
+      member => member.status === "pendente"
+    );
+
+
+  const approved =
+    team.filter(
+      member => member.status === "aprovado"
+    );
+
+
+  if (!pending.length) {
+
+    pendingContainer.innerHTML =
+      `<div class="empty">
+        Nenhum cadastro pendente.
+      </div>`;
+
+  } else {
+
+    pendingContainer.innerHTML =
+      pending.map(member => `
+
+        <div class="member">
+
+          <div class="member-top">
+
+            <div>
+              <strong>
+                ${escapeHTML(member.name)}
+              </strong>
+
+              <small>
+                ${escapeHTML(member.email)}
+              </small>
+
+              <small>
+                ${escapeHTML(roleName(member.role))}
+              </small>
+            </div>
+
+          </div>
+
+          <div class="member-actions">
+
+            ${
+              session && session.role === "dono"
+                ? `
+                  <button
+                    class="primary-btn"
+                    onclick="approveMember('${member.id}')"
+                  >
+                    Aprovar
+                  </button>
+
+                  <button
+                    class="danger-btn"
+                    onclick="rejectMember('${member.id}')"
+                  >
+                    Recusar
+                  </button>
+                `
+                : `
+                  <small style="color:var(--muted);">
+                    Apenas administrador pode aprovar.
+                  </small>
+                `
+            }
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  if (!approved.length) {
+
+    approvedContainer.innerHTML =
+      `<div class="empty">
+        Nenhum integrante aprovado.
+      </div>`;
+
+  } else {
+
+    approvedContainer.innerHTML =
+      approved.map(member => `
+
+        <div class="member">
+
+          <div class="member-top">
+
+            <div>
+
+              <strong>
+                ${escapeHTML(member.name)}
+              </strong>
+
+              <small>
+                ${escapeHTML(member.email)}
+              </small>
+
+              <small>
+                ${escapeHTML(roleName(member.role))}
+              </small>
+
+            </div>
+
+            <span class="status concluido">
+              Ativo
+            </span>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }
+
+}
+
+
+/* =========================
+   APROVAR
+========================= */
+
+function approveMember(id) {
+
+  if (!session || session.role !== "dono") {
+    alert("Somente o administrador pode aprovar integrantes.");
+    return;
+  }
+
+
+  const member =
+    team.find(
+      m => m.id === id
+    );
+
+  if (!member) return;
+
+
+  member.status = "aprovado";
+
+  member.approvedAt =
+    new Date().toISOString();
+
+
+  saveTeam();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   RECUSAR
+========================= */
+
+function rejectMember(id) {
+
+  if (!session || session.role !== "dono") {
+    alert("Somente o administrador pode recusar integrantes.");
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Deseja recusar este cadastro?"
+    );
+
+  if (!confirmed) return;
+
+
+  team =
+    team.filter(
+      member => member.id !== id
+    );
+
+
+  saveTeam();
+
+  renderAll();
+
+}
+
+
+/* =========================
+   RENDER GERAL
+========================= */
+
+function renderAll() {
+
+  renderDashboard();
+  renderRequests();
+  renderTeam();
+
+}
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+function init() {
+
+  loadData();
+
+  session = getSession();
+
+  if (session) {
+
+    openPanel();
+
+  } else {
+
+    document.getElementById("gate")
+      .classList.remove("hidden");
+
+    document.getElementById("app")
+      .classList.add("hidden");
+
+  }
+
+}
+
+
+init();
+
+</script>
+
+</body>
+  </html>
