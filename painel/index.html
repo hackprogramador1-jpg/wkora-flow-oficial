@@ -1,1116 +1,2116 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#09090d">
-  <title>WKORA FLOW — Painel</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #08080c;
-      --panel: #101016;
-      --panel-2: #15151d;
-      --panel-3: #1b1b24;
-      --border: rgba(255,255,255,.08);
-      --text: #f7f7fa;
-      --muted: #92929e;
-      --purple: #8b5cf6;
-      --purple-2: #a78bfa;
-      --green: #34d399;
-      --yellow: #fbbf24;
-      --red: #f87171;
-      --blue: #60a5fa;
-      --radius: 18px;
-    }
-
-    html,
-    body {
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: "Manrope", sans-serif;
-    }
-
-    body {
-      overflow-x: hidden;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* =========================
-       GATE
-    ========================= */
-
-    #gate {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(139,92,246,.16), transparent 38%),
-        var(--bg);
-    }
-
-    .gate-card {
-      width: 100%;
-      max-width: 470px;
-      background: rgba(16,16,22,.96);
-      border: 1px solid var(--border);
-      border-radius: 26px;
-      padding: 30px;
-      box-shadow: 0 25px 80px rgba(0,0,0,.45);
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-    }
-
-    .brand-logo {
-      width: 68px;
-      height: 68px;
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 16px;
-      background: linear-gradient(135deg, var(--purple), #5b21b6);
-      font-size: 24px;
-      font-weight: 800;
-      box-shadow: 0 15px 40px rgba(139,92,246,.25);
-    }
-
-    .brand h1 {
-      font-size: 25px;
-      font-weight: 800;
-    }
-
-    .brand p {
-      color: var(--muted);
-      margin-top: 7px;
-      font-size: 14px;
-    }
-
-    .gate-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      background: #0b0b10;
-      padding: 5px;
-      border-radius: 13px;
-      margin-bottom: 22px;
-    }
-
-    .gate-tab {
-      border: 0;
-      border-radius: 9px;
-      background: transparent;
-      color: var(--muted);
-      padding: 11px;
-      font-weight: 700;
-    }
-
-    .gate-tab.active {
-      background: var(--panel-3);
-      color: white;
-    }
-
-    .field {
-      margin-bottom: 15px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      color: #c9c9d2;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #0b0b10;
-      color: white;
-      outline: none;
-      border-radius: 12px;
-      padding: 13px 14px;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: rgba(139,92,246,.7);
-      box-shadow: 0 0 0 3px rgba(139,92,246,.1);
-    }
-
-    .field textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
-
-    .primary-btn {
-      width: 100%;
-      border: 0;
-      border-radius: 12px;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--purple), #6d28d9);
-      color: white;
-      font-weight: 800;
-    }
-
-    .primary-btn:hover {
-      filter: brightness(1.08);
-    }
-
-    .secondary-btn {
-      border: 1px solid var(--border);
-      background: var(--panel-3);
-      color: white;
-      border-radius: 11px;
-      padding: 10px 14px;
-      font-weight: 700;
-    }
-
-    .danger-btn {
-      border: 1px solid rgba(248,113,113,.2);
-      background: rgba(248,113,113,.08);
-      color: #fca5a5;
-      border-radius: 10px;
-      padding: 9px 12px;
-      font-weight: 700;
-    }
-
-    .gate-info {
-      margin-top: 17px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-    }
-
-    .message {
-      padding: 11px 13px;
-      border-radius: 11px;
-      margin-bottom: 15px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .message.error {
-      background: rgba(248,113,113,.09);
-      border: 1px solid rgba(248,113,113,.18);
-      color: #fca5a5;
-    }
-
-    .message.success {
-      background: rgba(52,211,153,.09);
-      border: 1px solid rgba(52,211,153,.18);
-      color: #6ee7b7;
-    }
-
-    /* =========================
-       APP
-    ========================= */
-
-    #app {
-      min-height: 100vh;
-      display: flex;
-    }
-
-    .sidebar {
-      width: 250px;
-      flex-shrink: 0;
-      min-height: 100vh;
-      background: #0c0c11;
-      border-right: 1px solid var(--border);
-      padding: 22px 15px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .side-brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 5px 9px 25px;
-    }
-
-    .side-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--purple), #5b21b6);
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .side-brand strong {
-      font-size: 15px;
-    }
-
-    .side-brand small {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      margin-top: 2px;
-    }
-
-    .nav {
-      display: grid;
-      gap: 5px;
-    }
-
-    .nav button {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      text-align: left;
-      padding: 12px 13px;
-      border-radius: 11px;
-      font-weight: 700;
-    }
-
-    .nav button:hover,
-    .nav button.active {
-      background: rgba(139,92,246,.12);
-      color: white;
-    }
-
-    .sidebar-bottom {
-      margin-top: auto;
-    }
-
-    .user-mini {
-      padding: 13px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: 14px;
-      margin-bottom: 9px;
-    }
-
-    .user-mini strong {
-      display: block;
-      font-size: 13px;
-    }
-
-    .user-mini span {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .logout-btn {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: #aaaab5;
-      padding: 11px;
-      border-radius: 11px;
-      font-weight: 700;
-    }
-
-    .main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .topbar {
-      height: 72px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 28px;
-      background: rgba(8,8,12,.88);
-      backdrop-filter: blur(15px);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .topbar h2 {
-      font-size: 18px;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .role-badge {
-      padding: 7px 10px;
-      border-radius: 9px;
-      background: rgba(139,92,246,.12);
-      color: var(--purple-2);
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .content {
-      padding: 28px;
-      max-width: 1400px;
-      margin: auto;
-    }
-
-    .page {
-      display: none;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    .page-head {
-      margin-bottom: 23px;
-    }
-
-    .page-head h1 {
-      font-size: 27px;
-      margin-bottom: 6px;
-    }
-
-    .page-head p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    /* =========================
-       DASHBOARD
-    ========================= */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 13px;
-      margin-bottom: 20px;
-    }
-
-    .stat {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 19px;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .stat-number {
-      margin-top: 10px;
-      font-size: 30px;
-      font-weight: 800;
-    }
-
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1.4fr .8fr;
-      gap: 17px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 17px;
-    }
-
-    .card-title h3 {
-      font-size: 15px;
-    }
-
-    .request-item {
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .request-item:last-child {
-      border-bottom: 0;
-    }
-
-    .request-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .request-name {
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    .request-service {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
-    }
-
-    .request-date {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .empty {
-      padding: 28px 10px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* =========================
-       REQUESTS
-    ========================= */
-
-    .request-layout {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 17px;
-      align-items: start;
-    }
-
-    .request-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .request-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 16px;
-    }
-
-    .request-card.selected {
-      border-color: rgba(139,92,246,.55);
-      box-shadow: 0 0 0 1px rgba(139,92,246,.1);
-    }
-
-    .request-card-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .request-card h3 {
-      font-size: 14px;
-    }
-
-    .request-card p {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .request-card-actions {
-      margin-top: 13px;
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    .status {
-      display: inline-flex;
-      padding: 5px 8px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 800;
-    }
-
-    .status.novo {
-      background: rgba(96,165,250,.1);
-      color: #93c5fd;
-    }
-
-    .status.andamento {
-      background: rgba(251,191,36,.1);
-      color: #fcd34d;
-    }
-
-    .status.concluido {
-      background: rgba(52,211,153,.1);
-      color: #6ee7b7;
-    }
-
-    .source {
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 9px;
-      color: var(--muted);
-      padding: 4px 7px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-    }
-
-    .request-detail {
-      min-height: 400px;
-    }
-
-    .detail-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      align-items: flex-start;
-      margin-bottom: 18px;
-    }
-
-    .detail-head h2 {
-      font-size: 19px;
-    }
-
-    .detail-head p {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .detail-info {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .info-box {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .info-box small {
-      color: var(--muted);
-      font-size: 10px;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .info-box strong {
-      font-size: 12px;
-      word-break: break-word;
-    }
-
-    .detail-text {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 15px;
-      line-height: 1.6;
-      color: #d4d4dc;
-      font-size: 13px;
-      white-space: pre-wrap;
-      margin-bottom: 17px;
-    }
-
-    .reply-box {
-      border-top: 1px solid var(--border);
-      padding-top: 18px;
-    }
-
-    .reply-box h3 {
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .reply-box textarea {
-      width: 100%;
-      min-height: 115px;
-      resize: vertical;
-      background: #0b0b10;
-      border: 1px solid var(--border);
-      color: white;
-      border-radius: 12px;
-      padding: 13px;
-      outline: none;
-    }
-
-    .reply-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 9px;
-    }
-
-    .reply-actions button {
-      width: auto;
-    }
-
-    .reply-history {
-      margin-top: 20px;
-    }
-
-    .reply-history h3 {
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .reply-message {
-      padding: 12px;
-      border-radius: 11px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
-
-    .reply-message strong {
-      font-size: 11px;
-    }
-
-    .reply-message span {
-      float: right;
-      color: var(--muted);
-      font-size: 10px;
-    }
-
-    .reply-message p {
-      margin-top: 7px;
-      color: #d0d0d8;
-      font-size: 12px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    /* =========================
-       TEAM
-    ========================= */
-
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 17px;
-    }
-
-    .member {
-      padding: 14px;
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      margin-bottom: 9px;
-    }
-
-    .member-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .member strong {
-      font-size: 13px;
-    }
-
-    .member small {
-      color: var(--muted);
-      display: block;
-      margin-top: 4px;
-      font-size: 11px;
-    }
-
-    .member-actions {
-      display: flex;
-      gap: 7px;
-      margin-top: 11px;
-    }
-
-    .member-actions button {
-      flex: 1;
-    }
-
-    .owner-only {
-      display: none;
-    }
-
-    body.owner .owner-only {
-      display: block;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    .mobile-menu {
-      display: none;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: white;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 950px) {
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .dashboard-grid,
-      .request-layout,
-      .team-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .sidebar {
-        position: fixed;
-        z-index: 50;
-        left: -270px;
-        top: 0;
-        transition: .25s ease;
-      }
-
-      .sidebar.open {
-        left: 0;
-      }
-
-      .mobile-menu {
-        display: block;
-      }
-
-      .topbar {
-        padding: 0 15px;
-      }
-
-      .topbar h2 {
-        font-size: 15px;
-      }
-
-      .content {
-        padding: 18px 14px 30px;
-      }
-
-      .stats {
-        gap: 9px;
-      }
-
-      .stat {
-        padding: 15px;
-      }
-
-      .stat-number {
-        font-size: 25px;
-      }
-
-      .detail-info {
-        grid-template-columns: 1fr;
-      }
-
-      .gate-card {
-        padding: 22px;
-      }
-    }
-  </style>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#0f0c18">
+
+<title>WKORA FLOW — Painel</title>
+
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com"
+>
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+>
+
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+
+<script>
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyBsVoVdD7HJIzDJkjbdE5AwgXdrrhjKZwY",
+
+  authDomain:
+    "wkora-flow-oficial.firebaseapp.com",
+
+  projectId:
+    "wkora-flow-oficial",
+
+  storageBucket:
+    "wkora-flow-oficial.firebasestorage.app",
+
+  messagingSenderId:
+    "565818301840",
+
+  appId:
+    "1:565818301840:web:6fed73562c9f7459716715",
+
+  measurementId:
+    "G-5TSMDG4820"
+
+};
+
+
+firebase.initializeApp(
+  firebaseConfig
+);
+
+
+const auth =
+  firebase.auth();
+
+
+const db =
+  firebase.firestore();
+
+</script>
+
+
+<style>
+
+:root {
+
+  --bg: #0f0c18;
+
+  --bg2: #151020;
+
+  --surface: #1c1729;
+
+  --surface2: #241d34;
+
+  --line: #342b4b;
+
+  --violet: #a855f7;
+
+  --violet2: #6d28d9;
+
+  --violetGlow:
+    rgba(168,85,247,.16);
+
+  --text: #f5f2fa;
+
+  --muted: #a8a2bd;
+
+  --silver: #d1ccdf;
+
+  --green: #4fd1a5;
+
+  --yellow: #f5b95c;
+
+  --red: #ff6b7a;
+
+  --radius: 15px;
+
+  --font: "Manrope", sans-serif;
+
+  --mono: "IBM Plex Mono", monospace;
+
+}
+
+
+* {
+
+  box-sizing: border-box;
+
+}
+
+
+html {
+
+  scroll-behavior: smooth;
+
+}
+
+
+body {
+
+  margin: 0;
+
+  min-height: 100vh;
+
+  background: var(--bg);
+
+  color: var(--text);
+
+  font-family: var(--font);
+
+}
+
+
+button,
+input,
+textarea,
+select {
+
+  font-family: inherit;
+
+}
+
+
+button {
+
+  cursor: pointer;
+
+}
+
+
+button:disabled {
+
+  opacity: .6;
+
+  cursor: not-allowed;
+
+}
+
+
+.hidden {
+
+  display: none !important;
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+#login-screen {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+}
+
+
+.login-box {
+
+  width: 100%;
+
+  max-width: 430px;
+
+  padding: 30px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: 22px;
+
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.35);
+
+}
+
+
+.brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 26px;
+
+}
+
+
+.brand-icon {
+
+  width: 46px;
+
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--violet2)
+    );
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+}
+
+
+.brand strong {
+
+  display: block;
+
+  font-size: 17px;
+
+}
+
+
+.brand span {
+
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+}
+
+
+.login-box h1 {
+
+  margin: 0 0 8px;
+
+  font-size: 26px;
+
+}
+
+
+.login-box > p {
+
+  margin: 0 0 24px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+}
+
+
+.field {
+
+  margin-bottom: 15px;
+
+}
+
+
+.field label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+}
+
+
+.field input,
+.field textarea,
+.field select {
+
+  width: 100%;
+
+  padding: 12px 13px;
+
+  color: var(--text);
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  outline: none;
+
+}
+
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+
+  border-color: var(--violet);
+
+  box-shadow:
+    0 0 0 3px var(--violetGlow);
+
+}
+
+
+.primary {
+
+  width: 100%;
+
+  min-height: 46px;
+
+  border: 0;
+
+  border-radius: 10px;
+
+  color: #fff;
+
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--violet2)
+    );
+
+}
+
+
+.login-error {
+
+  display: none;
+
+  margin-top: 14px;
+
+  padding: 12px;
+
+  color: var(--red);
+
+  background: rgba(255,107,122,.08);
+
+  border: 1px solid rgba(255,107,122,.25);
+
+  border-radius: 10px;
+
+  font-size: 13px;
+
+}
+
+
+.login-error.show {
+
+  display: block;
+
+}
+
+
+/* =====================================================
+   APP
+===================================================== */
+
+#app {
+
+  min-height: 100vh;
+
+  display: none;
+
+}
+
+
+#app.visible {
+
+  display: block;
+
+}
+
+
+.layout {
+
+  min-height: 100vh;
+
+  display: flex;
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+
+  position: fixed;
+
+  inset: 0 auto 0 0;
+
+  width: 250px;
+
+  padding: 22px 16px;
+
+  background: var(--bg2);
+
+  border-right: 1px solid var(--line);
+
+  z-index: 50;
+
+}
+
+
+.side-brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 8px;
+
+  margin-bottom: 28px;
+
+}
+
+
+.side-brand-icon {
+
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--violet2)
+    );
+
+  font-weight: 900;
+
+}
+
+
+.side-brand b {
+
+  display: block;
+
+  font-size: 14px;
+
+}
+
+
+.side-brand small {
+
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+}
+
+
+.side-menu {
+
+  display: grid;
+
+  gap: 6px;
+
+}
+
+
+.side-button {
+
+  width: 100%;
+
+  padding: 11px 12px;
+
+  border: 1px solid transparent;
+
+  border-radius: 10px;
+
+  color: var(--muted);
+
+  background: transparent;
+
+  text-align: left;
+
+  font-weight: 700;
+
+}
+
+
+.side-button:hover,
+.side-button.active {
+
+  color: var(--text);
+
+  background: var(--surface);
+
+  border-color: var(--line);
+
+}
+
+
+.side-bottom {
+
+  position: absolute;
+
+  left: 16px;
+
+  right: 16px;
+
+  bottom: 18px;
+
+}
+
+
+.user-mini {
+
+  padding: 12px;
+
+  margin-bottom: 9px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+}
+
+
+.user-mini strong {
+
+  display: block;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 12px;
+
+}
+
+
+.user-mini span {
+
+  display: block;
+
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+}
+
+
+.logout {
+
+  width: 100%;
+
+  padding: 10px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  color: var(--muted);
+
+  background: transparent;
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.main {
+
+  width: calc(100% - 250px);
+
+  margin-left: 250px;
+
+  padding: 30px;
+
+}
+
+
+.top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+}
+
+
+.top h1 {
+
+  margin: 0;
+
+  font-size: 28px;
+
+}
+
+
+.top p {
+
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+}
+
+
+.mobile-menu {
+
+  display: none;
+
+  border: 1px solid var(--line);
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  border-radius: 9px;
+
+  padding: 9px 12px;
+
+}
+
+
+/* =====================================================
+   VIEWS
+===================================================== */
+
+.view {
+
+  display: none;
+
+}
+
+
+.view.active {
+
+  display: block;
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0,1fr));
+
+  gap: 14px;
+
+  margin-bottom: 22px;
+
+}
+
+
+.stat {
+
+  padding: 19px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+}
+
+
+.stat-label {
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+}
+
+
+.stat-value {
+
+  margin-top: 8px;
+
+  font-family: var(--mono);
+
+  font-size: 27px;
+
+}
+
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.panel-card {
+
+  padding: 20px;
+
+  background: var(--surface);
+
+  border: 1px solid var(--line);
+
+  border-radius: var(--radius);
+
+}
+
+
+.panel-card + .panel-card {
+
+  margin-top: 14px;
+
+}
+
+
+.panel-title {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 15px;
+
+}
+
+
+.panel-title h2 {
+
+  margin: 0;
+
+  font-size: 17px;
+
+}
+
+
+/* =====================================================
+   REQUESTS
+===================================================== */
+
+.request-list {
+
+  display: grid;
+
+  gap: 9px;
+
+}
+
+
+.request-item {
+
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  gap: 14px;
+
+  padding: 15px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 11px;
+
+  cursor: pointer;
+
+}
+
+
+.request-item:hover {
+
+  border-color: var(--violet2);
+
+}
+
+
+.request-main strong {
+
+  display: block;
+
+  font-size: 14px;
+
+}
+
+
+.request-main span {
+
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+}
+
+
+.request-meta {
+
+  text-align: right;
+
+}
+
+
+.badge {
+
+  display: inline-flex;
+
+  padding: 5px 8px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+}
+
+
+.badge.novo {
+
+  color: var(--violet);
+
+  background: var(--violetGlow);
+
+}
+
+
+.badge.andamento {
+
+  color: var(--yellow);
+
+  background: rgba(245,185,92,.10);
+
+}
+
+
+.badge.concluido {
+
+  color: var(--green);
+
+  background: rgba(79,209,165,.10);
+
+}
+
+
+/* =====================================================
+   REQUEST DETAIL
+===================================================== */
+
+.detail {
+
+  display: none;
+
+}
+
+
+.detail.open {
+
+  display: block;
+
+}
+
+
+.detail-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap: 12px;
+
+}
+
+
+.info {
+
+  padding: 13px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+}
+
+
+.info label {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+}
+
+
+.info div {
+
+  color: var(--silver);
+
+  font-size: 13px;
+
+  overflow-wrap: anywhere;
+
+}
+
+
+.detail-text {
+
+  margin-top: 14px;
+
+  padding: 15px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+}
+
+
+.detail-text label {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+}
+
+
+.detail-text p {
+
+  margin: 0;
+
+  color: var(--silver);
+
+  white-space: pre-wrap;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+}
+
+
+.detail-actions {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 15px;
+
+}
+
+
+.detail-actions select {
+
+  min-width: 180px;
+
+  padding: 10px;
+
+  color: var(--text);
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 9px;
+
+}
+
+
+.secondary {
+
+  padding: 10px 14px;
+
+  color: var(--text);
+
+  background: var(--surface2);
+
+  border: 1px solid var(--line);
+
+  border-radius: 9px;
+
+  font-weight: 700;
+
+}
+
+
+.danger {
+
+  padding: 10px 14px;
+
+  color: var(--red);
+
+  background: rgba(255,107,122,.06);
+
+  border: 1px solid rgba(255,107,122,.2);
+
+  border-radius: 9px;
+
+  font-weight: 700;
+
+}
+
+
+/* =====================================================
+   RESPONSE
+===================================================== */
+
+.response {
+
+  margin-top: 15px;
+
+}
+
+
+.response textarea {
+
+  width: 100%;
+
+  min-height: 110px;
+
+  padding: 12px;
+
+  color: var(--text);
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  resize: vertical;
+
+  outline: none;
+
+}
+
+
+.response textarea:focus {
+
+  border-color: var(--violet);
+
+}
+
+
+.response button {
+
+  margin-top: 9px;
+
+  padding: 10px 15px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--violet),
+      var(--violet2)
+    );
+
+  font-weight: 800;
+
+}
+
+
+.history {
+
+  margin-top: 18px;
+
+}
+
+
+.history h3 {
+
+  margin-bottom: 10px;
+
+  font-size: 13px;
+
+}
+
+
+.history-item {
+
+  padding: 12px;
+
+  margin-bottom: 8px;
+
+  background: var(--bg);
+
+  border: 1px solid var(--line);
+
+  border-radius: 9px;
+
+}
+
+
+.history-item .history-top {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+}
+
+
+.history-item p {
+
+  margin: 7px 0 0;
+
+  color: var(--silver);
+
+  font-size: 12px;
+
+  white-space: pre-wrap;
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty {
+
+  padding: 35px 15px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: 13px;
+
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+#toast {
+
+  position: fixed;
+
+  right: 20px;
+
+  bottom: 20px;
+
+  z-index: 1000;
+
+  max-width: 340px;
+
+  padding: 13px 15px;
+
+  color: var(--text);
+
+  background: var(--surface2);
+
+  border: 1px solid var(--line);
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.3);
+
+  transform:
+    translateY(20px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: .2s ease;
+
+  font-size: 12px;
+
+}
+
+
+#toast.show {
+
+  transform:
+    translateY(0);
+
+  opacity: 1;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .stats {
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+  }
+
+}
+
+
+@media (max-width: 760px) {
+
+  .sidebar {
+
+    transform:
+      translateX(-100%);
+
+    transition:
+      transform .2s ease;
+
+  }
+
+
+  .sidebar.open {
+
+    transform:
+      translateX(0);
+
+  }
+
+
+  .main {
+
+    width: 100%;
+
+    margin-left: 0;
+
+    padding: 20px 16px 30px;
+
+  }
+
+
+  .mobile-menu {
+
+    display: block;
+
+  }
+
+
+  .detail-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .top {
+
+    align-items: flex-start;
+
+  }
+
+
+  .top h1 {
+
+    font-size: 23px;
+
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .login-box {
+
+    padding: 22px;
+
+  }
+
+
+  .stats {
+
+    grid-template-columns: 1fr 1fr;
+
+  }
+
+
+  .stat {
+
+    padding: 14px;
+
+  }
+
+
+  .stat-value {
+
+    font-size: 23px;
+
+  }
+
+
+  .request-item {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .request-meta {
+
+    text-align: left;
+
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
-<!-- =========================
-     LOGIN / CADASTRO
-========================= -->
 
-<section id="gate">
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-  <div class="gate-card">
+<section id="login-screen">
+
+  <div class="login-box">
 
     <div class="brand">
-      <div class="brand-logo">WK</div>
-      <h1>WKORA FLOW</h1>
-      <p>Painel interno da equipe</p>
+
+      <div class="brand-icon">
+        W
+      </div>
+
+      <div>
+
+        <strong>
+          WKORA FLOW
+        </strong>
+
+        <span>
+          Painel interno
+        </span>
+
+      </div>
+
     </div>
 
-    <div class="gate-tabs">
-      <button class="gate-tab active" id="loginTab" onclick="showGate('login')">
-        Já tenho acesso
-      </button>
 
-      <button class="gate-tab" id="registerTab" onclick="showGate('register')">
-        Sou novo aqui
-      </button>
-    </div>
+    <h1>
+      Acesso da equipe
+    </h1>
 
-    <div id="gateMessage"></div>
 
-    <!-- LOGIN -->
+    <p>
+      Entre com o usuário criado no Firebase Authentication
+      para acessar as solicitações da WKORA.
+    </p>
 
-    <form id="loginForm">
+
+    <form id="login-form">
 
       <div class="field">
-        <label for="loginName">Nome</label>
+
+        <label for="login-email">
+          E-mail
+        </label>
+
         <input
-          id="loginName"
-          type="text"
-          placeholder="Digite seu nome"
-          autocomplete="name"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label for="loginCode">Código de acesso</label>
-        <input
-          id="loginCode"
-          type="password"
-          placeholder="Digite o código"
-          autocomplete="off"
-          required
-        >
-      </div>
-
-      <button class="primary-btn" type="submit">
-        Entrar no painel
-      </button>
-
-    </form>
-
-    <!-- CADASTRO -->
-
-    <form id="registerForm" class="hidden">
-
-      <div class="field">
-        <label for="registerName">Nome completo</label>
-        <input
-          id="registerName"
-          type="text"
-          placeholder="Seu nome"
-          required
-        >
-      </div>
-
-      <div class="field">
-        <label for="registerEmail">E-mail</label>
-        <input
-          id="registerEmail"
+          id="login-email"
           type="email"
+          autocomplete="username"
           placeholder="seu@email.com"
           required
         >
+
       </div>
+
 
       <div class="field">
-        <label for="registerRole">Cargo</label>
 
-        <select id="registerRole" required>
-          <option value="">Selecione seu cargo</option>
-          <option value="suporte">Suporte</option>
-          <option value="desenvolvedor">Desenvolvedor</option>
-          <option value="marketing">Marketing</option>
-          <option value="design">Design</option>
-          <option value="outro">Outro</option>
-        </select>
+        <label for="login-password">
+          Senha
+        </label>
+
+        <input
+          id="login-password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Sua senha"
+          required
+        >
 
       </div>
 
-      <button class="primary-btn" type="submit">
-        Enviar cadastro
+
+      <button
+        class="primary"
+        id="login-button"
+        type="submit"
+      >
+        Entrar no painel
       </button>
 
-    </form>
 
-    <div class="gate-info">
-      O acesso da equipe será protegido pelo sistema oficial de autenticação
-      quando conectarmos o Firebase.
-    </div>
+      <div
+        class="login-error"
+        id="login-error"
+      ></div>
+
+    </form>
 
   </div>
 
 </section>
 
 
-<!-- =========================
+<!-- =====================================================
      APP
-========================= -->
+===================================================== -->
 
-<section id="app" class="hidden">
+<div id="app">
 
-  <aside class="sidebar" id="sidebar">
-
-    <div class="side-brand">
-      <div class="side-logo">WK</div>
-
-      <div>
-        <strong>WKORA FLOW</strong>
-        <small>Painel interno</small>
-      </div>
-    </div>
-
-    <nav class="nav">
-
-      <button
-        class="active"
-        data-page="dashboard"
-        onclick="navigate('dashboard')"
-      >
-        Visão geral
-      </button>
-
-      <button
-        data-page="requests"
-        onclick="navigate('requests')"
-      >
-        Solicitações
-      </button>
-
-      <button
-        data-page="team"
-        onclick="navigate('team')"
-      >
-        Equipe
-      </button>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-
-      <div class="user-mini">
-        <strong id="sidebarUser">Equipe</strong>
-        <span id="sidebarRole">Membro</span>
-      </div>
-
-      <button class="logout-btn" onclick="logout()">
-        Sair
-      </button>
-
-    </div>
-
-  </aside>
+  <div class="layout">
 
 
-  <main class="main">
+    <!-- SIDEBAR -->
 
-    <header class="topbar">
+    <aside
+      class="sidebar"
+      id="sidebar"
+    >
 
-      <div style="display:flex;align-items:center;gap:10px;">
-        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
-        <h2 id="pageTitle">Visão geral</h2>
-      </div>
+      <div class="side-brand">
 
-      <div class="topbar-right">
-        <span class="role-badge" id="topRole">EQUIPE</span>
-      </div>
-
-    </header>
-
-
-    <div class="content">
-
-      <!-- =====================
-           DASHBOARD
-      ====================== -->
-
-      <section id="page-dashboard" class="page active">
-
-        <div class="page-head">
-          <h1>Visão geral</h1>
-          <p>Acompanhe o movimento do WKORA FLOW.</p>
+        <div class="side-brand-icon">
+          W
         </div>
+
+        <div>
+
+          <b>
+            WKORA FLOW
+          </b>
+
+          <small>
+            Painel interno
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <nav class="side-menu">
+
+        <button
+          class="side-button active"
+          data-view="dashboard"
+        >
+          ◈ &nbsp; Visão geral
+        </button>
+
+
+        <button
+          class="side-button"
+          data-view="requests"
+        >
+          ▣ &nbsp; Solicitações
+        </button>
+
+
+        <button
+          class="side-button"
+          data-view="team"
+        >
+          ◉ &nbsp; Minha equipe
+        </button>
+
+      </nav>
+
+
+      <div class="side-bottom">
+
+        <div class="user-mini">
+
+          <strong id="user-email">
+            —
+          </strong>
+
+          <span>
+            Usuário autenticado
+          </span>
+
+        </div>
+
+
+        <button
+          class="logout"
+          id="logout-button"
+        >
+          Sair
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+      <div class="top">
+
+        <div>
+
+          <h1 id="page-title">
+            Visão geral
+          </h1>
+
+          <p id="page-subtitle">
+            Acompanhe o fluxo de solicitações da WKORA.
+          </p>
+
+        </div>
+
+
+        <button
+          class="mobile-menu"
+          id="mobile-menu"
+        >
+          ☰
+        </button>
+
+      </div>
+
+
+      <!-- =================================================
+           DASHBOARD
+      ================================================= -->
+
+      <section
+        class="view active"
+        id="view-dashboard"
+      >
+
 
         <div class="stats">
 
-          <div class="stat">
-            <div class="stat-label">Solicitações novas</div>
-            <div class="stat-number" id="statNew">0</div>
-          </div>
 
           <div class="stat">
-            <div class="stat-label">Em andamento</div>
-            <div class="stat-number" id="statProgress">0</div>
+
+            <div class="stat-label">
+              Solicitações
+            </div>
+
+            <div
+              class="stat-value"
+              id="stat-total"
+            >
+              0
+            </div>
+
           </div>
 
-          <div class="stat">
-            <div class="stat-label">Concluídas</div>
-            <div class="stat-number" id="statDone">0</div>
-          </div>
 
           <div class="stat">
-            <div class="stat-label">Cadastros pendentes</div>
-            <div class="stat-number" id="statPending">0</div>
+
+            <div class="stat-label">
+              Novas
+            </div>
+
+            <div
+              class="stat-value"
+              id="stat-new"
+            >
+              0
+            </div>
+
           </div>
+
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Em andamento
+            </div>
+
+            <div
+              class="stat-value"
+              id="stat-progress"
+            >
+              0
+            </div>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-label">
+              Concluídas
+            </div>
+
+            <div
+              class="stat-value"
+              id="stat-done"
+            >
+              0
+            </div>
+
+          </div>
+
 
         </div>
 
 
-        <div class="dashboard-grid">
+        <div class="panel-card">
 
-          <div class="card">
+          <div class="panel-title">
 
-            <div class="card-title">
-              <h3>Últimas solicitações</h3>
+            <h2>
+              Solicitações recentes
+            </h2>
 
-              <button
-                class="secondary-btn"
-                onclick="navigate('requests')"
-              >
-                Ver todas
-              </button>
-            </div>
-
-            <div id="latestRequests"></div>
+            <button
+              class="secondary"
+              data-view="requests"
+            >
+              Ver todas
+            </button>
 
           </div>
 
 
-          <div class="card">
+          <div
+            class="request-list"
+            id="recent-list"
+          ></div>
 
-            <div class="card-title">
-              <h3>Sistema</h3>
+        </div>
+
+
+      </section>
+
+
+      <!-- =================================================
+           REQUESTS
+      ================================================= -->
+
+      <section
+        class="view"
+        id="view-requests"
+      >
+
+
+        <div
+          class="panel-card"
+          id="request-list-card"
+        >
+
+          <div class="panel-title">
+
+            <h2>
+              Todas as solicitações
+            </h2>
+
+            <span
+              id="request-count"
+              style="
+                color:var(--muted);
+                font-size:11px;
+              "
+            >
+              0
+            </span>
+
+          </div>
+
+
+          <div
+            class="request-list"
+            id="all-requests"
+          ></div>
+
+        </div>
+
+
+        <div
+          class="panel-card detail"
+          id="request-detail"
+        >
+
+          <div class="panel-title">
+
+            <h2>
+              Detalhes da solicitação
+            </h2>
+
+            <button
+              class="secondary"
+              id="close-detail"
+            >
+              ← Voltar
+            </button>
+
+          </div>
+
+
+          <div class="detail-grid">
+
+
+            <div class="info">
+
+              <label>
+                Cliente
+              </label>
+
+              <div id="detail-name">
+                —
+              </div>
+
             </div>
 
-            <div class="request-item">
-              <div class="request-name">Painel interno</div>
-              <div class="request-service">
-                Funcionando localmente
+
+            <div class="info">
+
+              <label>
+                Empresa
+              </label>
+
+              <div id="detail-company">
+                —
               </div>
+
             </div>
 
-            <div class="request-item">
-              <div class="request-name">Armazenamento</div>
-              <div class="request-service">
-                Dados temporários do navegador
+
+            <div class="info">
+
+              <label>
+                E-mail
+              </label>
+
+              <div id="detail-email">
+                —
               </div>
+
             </div>
 
-            <div class="request-item">
-              <div class="request-name">Próxima etapa</div>
-              <div class="request-service">
-                Firebase + Firestore
+
+            <div class="info">
+
+              <label>
+                Telefone
+              </label>
+
+              <div id="detail-phone">
+                —
               </div>
+
+            </div>
+
+
+            <div class="info">
+
+              <label>
+                Serviço
+              </label>
+
+              <div id="detail-service">
+                —
+              </div>
+
+            </div>
+
+
+            <div class="info">
+
+              <label>
+                Orçamento
+              </label>
+
+              <div id="detail-budget">
+                —
+              </div>
+
+            </div>
+
+
+            <div class="info">
+
+              <label>
+                Origem
+              </label>
+
+              <div id="detail-origin">
+                —
+              </div>
+
+            </div>
+
+
+            <div class="info">
+
+              <label>
+                Data
+              </label>
+
+              <div id="detail-date">
+                —
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+          <div class="detail-text">
+
+            <label>
+              Detalhes enviados pelo cliente
+            </label>
+
+            <p id="detail-description">
+              —
+            </p>
+
+          </div>
+
+
+          <div class="detail-actions">
+
+            <select id="detail-status">
+
+              <option value="novo">
+                Novo
+              </option>
+
+              <option value="andamento">
+                Em andamento
+              </option>
+
+              <option value="concluido">
+                Concluído
+              </option>
+
+            </select>
+
+
+            <button
+              class="secondary"
+              id="save-status"
+            >
+              Salvar status
+            </button>
+
+
+            <button
+              class="danger"
+              id="delete-request"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+
+          <div class="response">
+
+            <div class="field">
+
+              <label>
+                Resposta / observação interna
+              </label>
+
+              <textarea
+                id="response-text"
+                placeholder="Digite uma resposta ou observação..."
+              ></textarea>
+
+            </div>
+
+
+            <button
+              id="save-response"
+            >
+              Salvar resposta
+            </button>
+
+          </div>
+
+
+          <div class="history">
+
+            <h3>
+              Histórico
+            </h3>
+
+            <div
+              id="history-list"
+            ></div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           TEAM
+      ================================================= -->
+
+      <section
+        class="view"
+        id="view-team"
+      >
+
+        <div class="panel-card">
+
+          <div class="panel-title">
+
+            <h2>
+              Minha equipe
+            </h2>
+
+          </div>
+
+
+          <p
+            style="
+              color:var(--muted);
+              font-size:13px;
+              line-height:1.6;
+            "
+          >
+
+            O acesso deste painel é controlado pelo Firebase
+            Authentication.
+
+            Para adicionar outro funcionário, crie o usuário
+            em Firebase → Authentication → Users.
+
+          </p>
+
+
+          <div class="info">
+
+            <label>
+              Usuário conectado
+            </label>
+
+            <div id="team-current-user">
+              —
+            </div>
+
+          </div>
+
+
+          <div
+            class="info"
+            style="margin-top:10px;"
+          >
+
+            <label>
+              Status
+            </label>
+
+            <div>
+              Autenticado pelo Firebase
             </div>
 
           </div>
@@ -1120,917 +2120,664 @@
       </section>
 
 
-      <!-- =====================
-           SOLICITAÇÕES
-      ====================== -->
+    </main>
 
-      <section id="page-requests" class="page">
+  </div>
 
-        <div class="page-head">
-          <h1>Solicitações</h1>
-          <p>Visualize, organize e responda às solicitações.</p>
-        </div>
-
-        <div class="request-layout">
-
-          <!-- LISTA -->
-
-          <div>
-
-            <div class="card" style="margin-bottom:12px;">
-
-              <div class="card-title">
-                <h3>Solicitações</h3>
-
-                <button
-                  class="secondary-btn"
-                  onclick="openManualRequest()"
-                >
-                  + Nova
-                </button>
-              </div>
-
-              <div id="requestList" class="request-list"></div>
-
-            </div>
-
-          </div>
+</div>
 
 
-          <!-- DETALHES -->
-
-          <div class="card request-detail" id="requestDetail">
-
-            <div class="empty">
-              Selecione uma solicitação para visualizar os detalhes.
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================
-           EQUIPE
-      ====================== -->
-
-      <section id="page-team" class="page">
-
-        <div class="page-head">
-          <h1>Equipe</h1>
-          <p>Gerencie os integrantes e os cadastros pendentes.</p>
-        </div>
-
-        <div class="team-grid">
-
-          <div class="card">
-
-            <div class="card-title">
-              <h3>Cadastros pendentes</h3>
-            </div>
-
-            <div id="pendingTeam"></div>
-
-          </div>
-
-
-          <div class="card">
-
-            <div class="card-title">
-              <h3>Equipe aprovada</h3>
-            </div>
-
-            <div id="approvedTeam"></div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </main>
-
-</section>
+<div id="toast"></div>
 
 
 <script>
-/* =========================================================
-   WKORA FLOW — PAINEL V1
-   Sem window.claude
-   Sem Firebase nesta etapa
-========================================================= */
+
+"use strict";
 
 
-/* =========================
-   CONFIGURAÇÃO TEMPORÁRIA
-========================= */
-
-const TEAM_CODE = "wkora-equipe-2026";
-const OWNER_CODE = "wkora-dono-2026";
-
-const SESSION_KEY = "wkora_flow_panel_session_v1";
-const REQUESTS_KEY = "wkora_flow_requests_v1";
-const TEAM_KEY = "wkora_flow_team_v1";
-
-
-/* =========================
+/* =====================================================
    ESTADO
-========================= */
+===================================================== */
 
-let session = null;
+let currentUser = null;
+
 let requests = [];
-let team = [];
-let selectedRequestId = null;
+
+let selectedRequest = null;
+
+let unsubscribeRequests = null;
 
 
-/* =========================
-   UTILITÁRIOS
-========================= */
+/* =====================================================
+   ELEMENTOS
+===================================================== */
 
-function loadData() {
-
-  try {
-    requests = JSON.parse(
-      localStorage.getItem(REQUESTS_KEY) || "[]"
-    );
-  } catch {
-    requests = [];
-  }
-
-  try {
-    team = JSON.parse(
-      localStorage.getItem(TEAM_KEY) || "[]"
-    );
-  } catch {
-    team = [];
-  }
-
-}
-
-
-function saveRequests() {
-  localStorage.setItem(
-    REQUESTS_KEY,
-    JSON.stringify(requests)
-  );
-}
-
-
-function saveTeam() {
-  localStorage.setItem(
-    TEAM_KEY,
-    JSON.stringify(team)
-  );
-}
-
-
-function saveSession() {
-  sessionStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify(session)
-  );
-}
-
-
-function getSession() {
-
-  try {
-    return JSON.parse(
-      sessionStorage.getItem(SESSION_KEY) || "null"
-    );
-  } catch {
-    return null;
-  }
-
-}
-
-
-function escapeHTML(value) {
-
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
-}
-
-
-function formatDate(date) {
-
-  if (!date) return "-";
-
-  return new Date(date).toLocaleString(
-    "pt-BR",
-    {
-      dateStyle: "short",
-      timeStyle: "short"
-    }
+const loginScreen =
+  document.getElementById(
+    "login-screen"
   );
 
-}
+
+const app =
+  document.getElementById(
+    "app"
+  );
 
 
-function roleName(role) {
-
-  const roles = {
-    suporte: "Suporte",
-    desenvolvedor: "Desenvolvedor",
-    marketing: "Marketing",
-    design: "Design",
-    outro: "Outro",
-    dono: "Administrador"
-  };
-
-  return roles[role] || role || "Equipe";
-
-}
+const loginForm =
+  document.getElementById(
+    "login-form"
+  );
 
 
-function statusName(status) {
-
-  const names = {
-    novo: "Novo",
-    andamento: "Em andamento",
-    concluido: "Concluído"
-  };
-
-  return names[status] || status;
-
-}
+const loginButton =
+  document.getElementById(
+    "login-button"
+  );
 
 
-/* =========================
-   GATE
-========================= */
-
-function showGate(type) {
-
-  const loginForm = document.getElementById("loginForm");
-  const registerForm = document.getElementById("registerForm");
-
-  const loginTab = document.getElementById("loginTab");
-  const registerTab = document.getElementById("registerTab");
-
-  clearGateMessage();
-
-  if (type === "login") {
-
-    loginForm.classList.remove("hidden");
-    registerForm.classList.add("hidden");
-
-    loginTab.classList.add("active");
-    registerTab.classList.remove("active");
-
-  } else {
-
-    loginForm.classList.add("hidden");
-    registerForm.classList.remove("hidden");
-
-    loginTab.classList.remove("active");
-    registerTab.classList.add("active");
-
-  }
-
-}
+const loginError =
+  document.getElementById(
+    "login-error"
+  );
 
 
-function gateMessage(text, type = "error") {
-
-  document.getElementById("gateMessage").innerHTML =
-    `<div class="message ${type}">${escapeHTML(text)}</div>`;
-
-}
+const userEmail =
+  document.getElementById(
+    "user-email"
+  );
 
 
-function clearGateMessage() {
-
-  document.getElementById("gateMessage").innerHTML = "";
-
-}
-
-
-/* =========================
-   LOGIN
-========================= */
-
-document.getElementById("loginForm").addEventListener(
-  "submit",
-  function(event) {
-
-    event.preventDefault();
-
-    const name =
-      document.getElementById("loginName").value.trim();
-
-    const code =
-      document.getElementById("loginCode").value.trim();
-
-    if (!name || !code) {
-      gateMessage("Preencha nome e código.");
-      return;
-    }
-
-    let role = null;
-
-    if (code === OWNER_CODE) {
-      role = "dono";
-    } else if (code === TEAM_CODE) {
-      role = "equipe";
-    }
-
-    if (!role) {
-      gateMessage("Código de acesso inválido.");
-      return;
-    }
-
-    session = {
-      name,
-      role,
-      loginAt: new Date().toISOString()
-    };
-
-    saveSession();
-    openPanel();
-
-  }
-);
+const sidebar =
+  document.getElementById(
+    "sidebar"
+  );
 
 
-/* =========================
-   CADASTRO
-========================= */
+const mobileMenu =
+  document.getElementById(
+    "mobile-menu"
+  );
 
-document.getElementById("registerForm").addEventListener(
-  "submit",
-  function(event) {
 
-    event.preventDefault();
+const toast =
+  document.getElementById(
+    "toast"
+  );
 
-    const name =
-      document.getElementById("registerName").value.trim();
 
-    const email =
-      document.getElementById("registerEmail").value.trim();
+/* =====================================================
+   TOAST
+===================================================== */
 
-    const role =
-      document.getElementById("registerRole").value;
+let toastTimer;
 
-    if (!name || !email || !role) {
-      gateMessage("Preencha todos os campos.");
-      return;
-    }
 
-    const alreadyExists = team.some(
-      member =>
-        member.email.toLowerCase() === email.toLowerCase()
+function showToast(message) {
+
+  toast.textContent =
+    message;
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toastTimer =
+    setTimeout(
+      function () {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      3000
     );
 
-    if (alreadyExists) {
-      gateMessage("Esse e-mail já possui um cadastro.");
-      return;
-    }
-
-    const integrante = {
-      id: crypto.randomUUID
-        ? crypto.randomUUID()
-        : Date.now().toString(),
-
-      name,
-      email,
-      role,
-
-      status: "pendente",
-
-      createdAt: new Date().toISOString()
-    };
-
-    team.push(integrante);
-
-    saveTeam();
-
-    gateMessage(
-      "Cadastro enviado. Aguarde a aprovação da equipe.",
-      "success"
-    );
-
-    document.getElementById("registerForm").reset();
-
-  }
-);
-
-
-/* =========================
-   ABRIR PAINEL
-========================= */
-
-function openPanel() {
-
-  document.getElementById("gate")
-    .classList.add("hidden");
-
-  document.getElementById("app")
-    .classList.remove("hidden");
-
-  document.getElementById("sidebarUser")
-    .textContent = session.name;
-
-  document.getElementById("sidebarRole")
-    .textContent =
-      session.role === "dono"
-        ? "Administrador"
-        : "Equipe";
-
-  document.getElementById("topRole")
-    .textContent =
-      session.role === "dono"
-        ? "ADMINISTRADOR"
-        : "EQUIPE";
-
-  if (session.role === "dono") {
-    document.body.classList.add("owner");
-  } else {
-    document.body.classList.remove("owner");
-  }
-
-  renderAll();
-
 }
 
 
-/* =========================
-   LOGOUT
-========================= */
+/* =====================================================
+   ERROS FIREBASE
+===================================================== */
 
-function logout() {
+function firebaseErrorMessage(
+  error
+) {
 
-  sessionStorage.removeItem(SESSION_KEY);
+  if (!error) {
 
-  session = null;
-
-  document.getElementById("app")
-    .classList.add("hidden");
-
-  document.getElementById("gate")
-    .classList.remove("hidden");
-
-  document.getElementById("loginForm").reset();
-
-  showGate("login");
-
-}
-
-
-/* =========================
-   NAVEGAÇÃO
-========================= */
-
-function navigate(page) {
-
-  document.querySelectorAll(".page")
-    .forEach(element => {
-      element.classList.remove("active");
-    });
-
-  document.querySelectorAll(".nav button")
-    .forEach(button => {
-      button.classList.remove("active");
-    });
-
-  const target =
-    document.getElementById("page-" + page);
-
-  const navButton =
-    document.querySelector(
-      `.nav button[data-page="${page}"]`
-    );
-
-  if (target) {
-    target.classList.add("active");
-  }
-
-  if (navButton) {
-    navButton.classList.add("active");
-  }
-
-  const titles = {
-    dashboard: "Visão geral",
-    requests: "Solicitações",
-    team: "Equipe"
-  };
-
-  document.getElementById("pageTitle")
-    .textContent = titles[page] || "WKORA FLOW";
-
-  document.getElementById("sidebar")
-    .classList.remove("open");
-
-  renderAll();
-
-}
-
-
-/* =========================
-   SIDEBAR MOBILE
-========================= */
-
-function toggleSidebar() {
-
-  document.getElementById("sidebar")
-    .classList.toggle("open");
-
-}
-
-
-/* =========================
-   DASHBOARD
-========================= */
-
-function renderDashboard() {
-
-  const newCount =
-    requests.filter(
-      r => r.status === "novo"
-    ).length;
-
-  const progressCount =
-    requests.filter(
-      r => r.status === "andamento"
-    ).length;
-
-  const doneCount =
-    requests.filter(
-      r => r.status === "concluido"
-    ).length;
-
-  const pendingCount =
-    team.filter(
-      member => member.status === "pendente"
-    ).length;
-
-  document.getElementById("statNew")
-    .textContent = newCount;
-
-  document.getElementById("statProgress")
-    .textContent = progressCount;
-
-  document.getElementById("statDone")
-    .textContent = doneCount;
-
-  document.getElementById("statPending")
-    .textContent = pendingCount;
-
-
-  const latest =
-    [...requests]
-      .sort(
-        (a,b) =>
-          new Date(b.createdAt) -
-          new Date(a.createdAt)
-      )
-      .slice(0, 6);
-
-
-  const container =
-    document.getElementById("latestRequests");
-
-  if (!latest.length) {
-
-    container.innerHTML =
-      `<div class="empty">Nenhuma solicitação ainda.</div>`;
-
-    return;
+    return "Ocorreu um erro.";
 
   }
 
 
-  container.innerHTML =
-    latest.map(request => `
-
-      <div class="request-item">
-
-        <div class="request-top">
-
-          <div>
-            <div class="request-name">
-              ${escapeHTML(request.name)}
-            </div>
-
-            <div class="request-service">
-              ${escapeHTML(request.service)}
-            </div>
-          </div>
-
-          <span class="status ${escapeHTML(request.status)}">
-            ${escapeHTML(statusName(request.status))}
-          </span>
-
-        </div>
-
-        <div class="request-date">
-          ${formatDate(request.createdAt)}
-        </div>
-
-      </div>
-
-    `).join("");
-
-}
-
-
-/* =========================
-   SOLICITAÇÕES
-========================= */
-
-function renderRequests() {
-
-  const container =
-    document.getElementById("requestList");
-
-  const sorted =
-    [...requests].sort(
-      (a,b) =>
-        new Date(b.createdAt) -
-        new Date(a.createdAt)
-    );
-
-
-  if (!sorted.length) {
-
-    container.innerHTML =
-      `<div class="empty">Nenhuma solicitação cadastrada.</div>`;
-
-    document.getElementById("requestDetail").innerHTML =
-      `<div class="empty">
-        Nenhuma solicitação para visualizar.
-      </div>`;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    sorted.map(request => `
-
-      <div
-        class="request-card ${
-          selectedRequestId === request.id
-            ? "selected"
-            : ""
-        }"
-        onclick="selectRequest('${request.id}')"
-      >
-
-        <div class="request-card-head">
-
-          <div>
-            <h3>${escapeHTML(request.name)}</h3>
-
-            <p>
-              ${escapeHTML(request.service)}
-            </p>
-          </div>
-
-          <span class="status ${escapeHTML(request.status)}">
-            ${escapeHTML(statusName(request.status))}
-          </span>
-
-        </div>
-
-        <div class="request-card-actions">
-
-          <span class="source">
-            ${escapeHTML(request.source || "manual")}
-          </span>
-
-          <span class="source">
-            ${formatDate(request.createdAt)}
-          </span>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-
-  if (
-    selectedRequestId &&
-    requests.some(r => r.id === selectedRequestId)
+  switch (
+    error.code
   ) {
 
-    renderRequestDetail(selectedRequestId);
+    case "auth/invalid-credential":
 
-  } else {
+    case "auth/invalid-login-credentials":
 
-    selectedRequestId = sorted[0].id;
+    case "auth/wrong-password":
 
-    renderRequestDetail(selectedRequestId);
+    case "auth/user-not-found":
+
+      return "E-mail ou senha incorretos.";
+
+
+    case "auth/too-many-requests":
+
+      return "Muitas tentativas. Aguarde alguns minutos e tente novamente.";
+
+
+    case "auth/network-request-failed":
+
+      return "Verifique sua conexão com a internet.";
+
+
+    case "permission-denied":
+
+      return "O Firebase recusou esta operação. Verifique as regras do Firestore.";
+
+
+    default:
+
+      return (
+        error.message ||
+        "Não foi possível concluir a operação."
+      );
 
   }
 
 }
 
 
-function selectRequest(id) {
+/* =====================================================
+   LOGIN
+===================================================== */
 
-  selectedRequestId = id;
+loginForm.addEventListener(
+  "submit",
+  async function (event) {
 
-  renderRequests();
-
-}
+    event.preventDefault();
 
 
-function renderRequestDetail(id) {
-
-  const request =
-    requests.find(
-      r => r.id === id
+    loginError.classList.remove(
+      "show"
     );
 
-  const container =
-    document.getElementById("requestDetail");
+
+    const email =
+      document
+        .getElementById(
+          "login-email"
+        )
+        .value
+        .trim();
 
 
-  if (!request) {
+    const password =
+      document
+        .getElementById(
+          "login-password"
+        )
+        .value;
 
-    container.innerHTML =
-      `<div class="empty">
-        Solicitação não encontrada.
-      </div>`;
 
-    return;
+    if (!email || !password) {
+
+      loginError.textContent =
+        "Informe o e-mail e a senha.";
+
+      loginError.classList.add(
+        "show"
+      );
+
+      return;
+
+    }
+
+
+    loginButton.disabled =
+      true;
+
+
+    loginButton.textContent =
+      "Entrando...";
+
+
+    try {
+
+      await auth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "Erro de login:",
+        error
+      );
+
+
+      loginError.textContent =
+        firebaseErrorMessage(
+          error
+        );
+
+
+      loginError.classList.add(
+        "show"
+      );
+
+
+    } finally {
+
+      loginButton.disabled =
+        false;
+
+
+      loginButton.textContent =
+        "Entrar no painel";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+auth.onAuthStateChanged(
+  function (user) {
+
+    currentUser =
+      user;
+
+
+    if (user) {
+
+      openPanel(
+        user
+      );
+
+    } else {
+
+      closePanel();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ABRIR PAINEL
+===================================================== */
+
+function openPanel(user) {
+
+  loginScreen.classList.add(
+    "hidden"
+  );
+
+
+  app.classList.add(
+    "visible"
+  );
+
+
+  userEmail.textContent =
+    user.email ||
+    "Usuário autenticado";
+
+
+  document.getElementById(
+    "team-current-user"
+  ).textContent =
+    user.email ||
+    "Usuário autenticado";
+
+
+  startRequestsListener();
+
+}
+
+
+/* =====================================================
+   FECHAR PAINEL
+===================================================== */
+
+function closePanel() {
+
+  app.classList.remove(
+    "visible"
+  );
+
+
+  loginScreen.classList.remove(
+    "hidden"
+  );
+
+
+  if (unsubscribeRequests) {
+
+    unsubscribeRequests();
+
+    unsubscribeRequests =
+      null;
 
   }
 
 
-  const replies =
-    Array.isArray(request.replies)
-      ? request.replies
-      : [];
+  requests = [];
+
+}
 
 
-  container.innerHTML = `
+/* =====================================================
+   LOGOUT
+===================================================== */
 
-    <div class="detail-head">
+document
+  .getElementById(
+    "logout-button"
+  )
+  .addEventListener(
+    "click",
+    async function () {
 
-      <div>
+      try {
 
-        <h2>
-          ${escapeHTML(request.name)}
-        </h2>
+        await auth.signOut();
 
-        <p>
-          Solicitação criada em
-          ${formatDate(request.createdAt)}
-        </p>
+      } catch (error) {
 
-      </div>
+        console.error(
+          error
+        );
 
-      <span class="status ${escapeHTML(request.status)}">
-        ${escapeHTML(statusName(request.status))}
-      </span>
+        showToast(
+          "Não foi possível sair."
+        );
 
-    </div>
-
-
-    <div class="detail-info">
-
-      <div class="info-box">
-        <small>Contato</small>
-        <strong>
-          ${escapeHTML(request.contact)}
-        </strong>
-      </div>
-
-      <div class="info-box">
-        <small>Serviço</small>
-        <strong>
-          ${escapeHTML(request.service)}
-        </strong>
-      </div>
-
-      <div class="info-box">
-        <small>Origem</small>
-        <strong>
-          ${escapeHTML(request.source || "manual")}
-        </strong>
-      </div>
-
-      <div class="info-box">
-        <small>Status</small>
-
-        <select
-          onchange="changeRequestStatus('${request.id}', this.value)"
-          style="
-            width:100%;
-            background:#0b0b10;
-            border:1px solid var(--border);
-            color:white;
-            border-radius:8px;
-            padding:7px;
-          "
-        >
-
-          <option
-            value="novo"
-            ${request.status === "novo" ? "selected" : ""}
-          >
-            Novo
-          </option>
-
-          <option
-            value="andamento"
-            ${request.status === "andamento" ? "selected" : ""}
-          >
-            Em andamento
-          </option>
-
-          <option
-            value="concluido"
-            ${request.status === "concluido" ? "selected" : ""}
-          >
-            Concluído
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-
-    <div class="detail-text">
-      ${escapeHTML(request.details || "Nenhum detalhe informado.")}
-    </div>
-
-
-    <div class="reply-box">
-
-      <h3>Responder cliente</h3>
-
-      <textarea
-        id="replyText"
-        placeholder="Digite a resposta para o cliente..."
-      ></textarea>
-
-      <div class="reply-actions">
-
-        <button
-          class="danger-btn"
-          onclick="deleteRequest('${request.id}')"
-        >
-          Excluir
-        </button>
-
-        <button
-          class="primary-btn"
-          style="width:auto;"
-          onclick="sendReply('${request.id}')"
-        >
-          Enviar resposta
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="reply-history">
-
-      <h3>Histórico de respostas</h3>
-
-      ${
-        replies.length
-          ? replies.map(reply => `
-
-            <div class="reply-message">
-
-              <strong>
-                ${escapeHTML(reply.author)}
-              </strong>
-
-              <span>
-                ${formatDate(reply.createdAt)}
-              </span>
-
-              <p>
-                ${escapeHTML(reply.text)}
-              </p>
-
-            </div>
-
-          `).join("")
-          : `<div class="empty">
-              Nenhuma resposta enviada ainda.
-             </div>`
       }
+
+    }
+  );
+
+
+/* =====================================================
+   FIRESTORE — SOLICITAÇÕES
+===================================================== */
+
+function startRequestsListener() {
+
+  if (unsubscribeRequests) {
+
+    unsubscribeRequests();
+
+  }
+
+
+  unsubscribeRequests =
+    db
+      .collection(
+        "solicitacoes"
+      )
+      .orderBy(
+        "criadoEm",
+        "desc"
+      )
+      .onSnapshot(
+
+        function (snapshot) {
+
+          requests =
+            snapshot.docs.map(
+              function (doc) {
+
+                return {
+
+                  id: doc.id,
+
+                  ...doc.data()
+
+                };
+
+              }
+            );
+
+
+          updateDashboard();
+
+          renderRequests();
+
+        },
+
+        function (error) {
+
+          console.error(
+            "Erro ao ouvir solicitações:",
+            error
+          );
+
+
+          showToast(
+            firebaseErrorMessage(
+              error
+            )
+          );
+
+        }
+
+      );
+
+}
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+function formatDate(timestamp) {
+
+  if (!timestamp) {
+
+    return "Aguardando data";
+
+  }
+
+
+  try {
+
+    const date =
+      timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
+
+
+    return date.toLocaleString(
+      "pt-BR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  } catch {
+
+    return "—";
+
+  }
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function statusLabel(status) {
+
+  switch (status) {
+
+    case "andamento":
+
+      return "Em andamento";
+
+
+    case "concluido":
+
+      return "Concluído";
+
+
+    default:
+
+      return "Novo";
+
+  }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+  const total =
+    requests.length;
+
+
+  const novo =
+    requests.filter(
+      r =>
+        (r.status || "novo")
+        === "novo"
+    ).length;
+
+
+  const andamento =
+    requests.filter(
+      r =>
+        r.status ===
+        "andamento"
+    ).length;
+
+
+  const concluido =
+    requests.filter(
+      r =>
+        r.status ===
+        "concluido"
+    ).length;
+
+
+  document.getElementById(
+    "stat-total"
+  ).textContent =
+    total;
+
+
+  document.getElementById(
+    "stat-new"
+  ).textContent =
+    novo;
+
+
+  document.getElementById(
+    "stat-progress"
+  ).textContent =
+    andamento;
+
+
+  document.getElementById(
+    "stat-done"
+  ).textContent =
+    concluido;
+
+
+  renderRecent();
+
+}
+
+
+/* =====================================================
+   REQUEST HTML
+===================================================== */
+
+function requestHtml(request) {
+
+  const status =
+    request.status ||
+    "novo";
+
+
+  const name =
+    request.nome ||
+    "Cliente sem nome";
+
+
+  const service =
+    request.servico ||
+    "Serviço não informado";
+
+
+  const date =
+    formatDate(
+      request.criadoEm
+    );
+
+
+  return `
+
+    <div
+      class="request-item"
+      data-request-id="${request.id}"
+    >
+
+      <div class="request-main">
+
+        <strong>
+          ${escapeHtml(name)}
+        </strong>
+
+        <span>
+          ${escapeHtml(service)}
+        </span>
+
+        <span>
+          ${escapeHtml(date)}
+        </span>
+
+      </div>
+
+
+      <div class="request-meta">
+
+        <span class="badge ${status}">
+          ${statusLabel(status)}
+        </span>
+
+      </div>
 
     </div>
 
@@ -2039,449 +2786,879 @@ function renderRequestDetail(id) {
 }
 
 
-/* =========================
-   MUDAR STATUS
-========================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-function changeRequestStatus(id, status) {
+function escapeHtml(value) {
 
-  const request =
-    requests.find(
-      r => r.id === id
+  return String(
+    value ?? ""
+  )
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
     );
-
-  if (!request) return;
-
-  request.status = status;
-
-  request.updatedAt =
-    new Date().toISOString();
-
-  saveRequests();
-
-  renderAll();
 
 }
 
 
-/* =========================
-   RESPONDER
-========================= */
+/* =====================================================
+   LISTA RECENTE
+===================================================== */
 
-function sendReply(id) {
+function renderRecent() {
 
-  const textarea =
-    document.getElementById("replyText");
+  const container =
+    document.getElementById(
+      "recent-list"
+    );
 
-  if (!textarea) return;
 
-  const text =
-    textarea.value.trim();
+  const recent =
+    requests.slice(
+      0,
+      5
+    );
 
-  if (!text) {
 
-    alert("Digite uma resposta antes de enviar.");
+  if (!recent.length) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+        Nenhuma solicitação recebida ainda.
+      </div>
+
+    `;
 
     return;
 
   }
 
 
-  const request =
-    requests.find(
-      r => r.id === id
+  container.innerHTML =
+    recent
+      .map(
+        requestHtml
+      )
+      .join("");
+
+
+  attachRequestClicks(
+    container
+  );
+
+}
+
+
+/* =====================================================
+   TODAS
+===================================================== */
+
+function renderRequests() {
+
+  const container =
+    document.getElementById(
+      "all-requests"
     );
 
-  if (!request) return;
+
+  document.getElementById(
+    "request-count"
+  ).textContent =
+    requests.length +
+    (
+      requests.length === 1
+        ? " solicitação"
+        : " solicitações"
+    );
 
 
-  if (!Array.isArray(request.replies)) {
-    request.replies = [];
+  if (!requests.length) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+        Nenhuma solicitação encontrada.
+      </div>
+
+    `;
+
+    return;
+
   }
 
 
-  request.replies.push({
-
-    id:
-      crypto.randomUUID
-        ? crypto.randomUUID()
-        : Date.now().toString(),
-
-    author:
-      session
-        ? session.name
-        : "Equipe WKORA",
-
-    text,
-
-    createdAt:
-      new Date().toISOString()
-
-  });
+  container.innerHTML =
+    requests
+      .map(
+        requestHtml
+      )
+      .join("");
 
 
-  request.status = "andamento";
-
-  request.updatedAt =
-    new Date().toISOString();
-
-
-  saveRequests();
-
-  renderAll();
+  attachRequestClicks(
+    container
+  );
 
 }
 
 
-/* =========================
-   EXCLUIR SOLICITAÇÃO
-========================= */
+/* =====================================================
+   CLIQUES NAS SOLICITAÇÕES
+===================================================== */
 
-function deleteRequest(id) {
+function attachRequestClicks(
+  container
+) {
+
+  container
+    .querySelectorAll(
+      "[data-request-id]"
+    )
+    .forEach(
+      function (element) {
+
+        element.addEventListener(
+          "click",
+          function () {
+
+            const id =
+              element.dataset.requestId;
+
+
+            openRequest(
+              id
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================================
+   ABRIR DETALHE
+===================================================== */
+
+function openRequest(id) {
 
   const request =
     requests.find(
-      r => r.id === id
-    );
+      function (item) {
 
-  if (!request) return;
+        return item.id === id;
 
-
-  const confirmed =
-    confirm(
-      "Deseja realmente excluir esta solicitação?"
-    );
-
-  if (!confirmed) return;
-
-
-  requests =
-    requests.filter(
-      r => r.id !== id
+      }
     );
 
 
-  selectedRequestId = null;
+  if (!request) {
 
-  saveRequests();
+    showToast(
+      "Solicitação não encontrada."
+    );
 
-  renderAll();
+    return;
+
+  }
+
+
+  selectedRequest =
+    request;
+
+
+  document.getElementById(
+    "request-list-card"
+  ).style.display =
+    "none";
+
+
+  const detail =
+    document.getElementById(
+      "request-detail"
+    );
+
+
+  detail.classList.add(
+    "open"
+  );
+
+
+  document.getElementById(
+    "detail-name"
+  ).textContent =
+    request.nome ||
+    "—";
+
+
+  document.getElementById(
+    "detail-company"
+  ).textContent =
+    request.empresa ||
+    "Não informado";
+
+
+  document.getElementById(
+    "detail-email"
+  ).textContent =
+    request.email ||
+    "—";
+
+
+  document.getElementById(
+    "detail-phone"
+  ).textContent =
+    request.telefone ||
+    request.contato ||
+    "Não informado";
+
+
+  document.getElementById(
+    "detail-service"
+  ).textContent =
+    request.servico ||
+    "—";
+
+
+  document.getElementById(
+    "detail-budget"
+  ).textContent =
+    request.orcamento ||
+    "Não informado";
+
+
+  document.getElementById(
+    "detail-origin"
+  ).textContent =
+    request.origem ||
+    "site";
+
+
+  document.getElementById(
+    "detail-date"
+  ).textContent =
+    formatDate(
+      request.criadoEm
+    );
+
+
+  document.getElementById(
+    "detail-description"
+  ).textContent =
+    request.detalhes ||
+    "Nenhum detalhe informado.";
+
+
+  document.getElementById(
+    "detail-status"
+  ).value =
+    request.status ||
+    "novo";
+
+
+  document.getElementById(
+    "response-text"
+  ).value =
+    "";
+
+
+  renderHistory(
+    request
+  );
 
 }
 
 
-/* =========================
-   NOVA SOLICITAÇÃO MANUAL
-========================= */
+/* =====================================================
+   FECHAR DETALHE
+===================================================== */
 
-function openManualRequest() {
+document
+  .getElementById(
+    "close-detail"
+  )
+  .addEventListener(
+    "click",
+    function () {
 
-  const name =
-    prompt("Nome do cliente:");
-
-  if (!name) return;
-
-
-  const contact =
-    prompt("Contato do cliente:");
-
-  if (!contact) return;
+      selectedRequest =
+        null;
 
 
-  const service =
-    prompt("Serviço solicitado:");
-
-  if (!service) return;
-
-
-  const details =
-    prompt("Detalhes da solicitação:") || "";
-
-
-  const request = {
-
-    id:
-      crypto.randomUUID
-        ? crypto.randomUUID()
-        : Date.now().toString(),
-
-    name,
-    contact,
-    service,
-    details,
-
-    source: "manual",
-
-    status: "novo",
-
-    replies: [],
-
-    createdAt:
-      new Date().toISOString(),
-
-    updatedAt:
-      new Date().toISOString()
-
-  };
+      document
+        .getElementById(
+          "request-detail"
+        )
+        .classList.remove(
+          "open"
+        );
 
 
-  requests.unshift(request);
-
-  saveRequests();
-
-  selectedRequestId = request.id;
-
-  navigate("requests");
-
-}
+      document.getElementById(
+        "request-list-card"
+      ).style.display =
+        "";
 
 
-/* =========================
-   EQUIPE
-========================= */
-
-function renderTeam() {
-
-  const pendingContainer =
-    document.getElementById("pendingTeam");
-
-  const approvedContainer =
-    document.getElementById("approvedTeam");
+    }
+  );
 
 
-  const pending =
-    team.filter(
-      member => member.status === "pendente"
+/* =====================================================
+   STATUS
+===================================================== */
+
+document
+  .getElementById(
+    "save-status"
+  )
+  .addEventListener(
+    "click",
+    async function () {
+
+      if (!selectedRequest) {
+
+        return;
+
+      }
+
+
+      const status =
+        document.getElementById(
+          "detail-status"
+        ).value;
+
+
+      try {
+
+        await db
+          .collection(
+            "solicitacoes"
+          )
+          .doc(
+            selectedRequest.id
+          )
+          .update({
+
+            status:
+              status,
+
+            atualizadoEm:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+
+        showToast(
+          "Status atualizado."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          firebaseErrorMessage(
+            error
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   RESPOSTA
+===================================================== */
+
+document
+  .getElementById(
+    "save-response"
+  )
+  .addEventListener(
+    "click",
+    async function () {
+
+      if (!selectedRequest) {
+
+        return;
+
+      }
+
+
+      const textarea =
+        document.getElementById(
+          "response-text"
+        );
+
+
+      const text =
+        textarea.value.trim();
+
+
+      if (!text) {
+
+        showToast(
+          "Digite uma resposta primeiro."
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const history =
+          Array.isArray(
+            selectedRequest.historico
+          )
+
+            ? [
+                ...selectedRequest.historico
+              ]
+
+            : [];
+
+
+        history.push({
+
+          texto:
+            text,
+
+          autor:
+            currentUser?.email ||
+            "Equipe WKORA",
+
+          data:
+            new Date()
+              .toISOString()
+
+        });
+
+
+        await db
+          .collection(
+            "solicitacoes"
+          )
+          .doc(
+            selectedRequest.id
+          )
+          .update({
+
+            historico:
+              history,
+
+            resposta:
+              text,
+
+            atualizadoEm:
+              firebase.firestore
+                .FieldValue
+                .serverTimestamp()
+
+          });
+
+
+        textarea.value =
+          "";
+
+
+        showToast(
+          "Resposta salva no histórico."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          firebaseErrorMessage(
+            error
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   HISTÓRICO
+===================================================== */
+
+function renderHistory(
+  request
+) {
+
+  const container =
+    document.getElementById(
+      "history-list"
     );
 
 
-  const approved =
-    team.filter(
-      member => member.status === "aprovado"
-    );
+  const history =
+    Array.isArray(
+      request.historico
+    )
+
+      ? request.historico
+
+      : [];
 
 
-  if (!pending.length) {
+  if (!history.length) {
 
-    pendingContainer.innerHTML =
-      `<div class="empty">
-        Nenhum cadastro pendente.
-      </div>`;
+    container.innerHTML = `
 
-  } else {
+      <div class="empty">
+        Nenhuma resposta registrada ainda.
+      </div>
 
-    pendingContainer.innerHTML =
-      pending.map(member => `
+    `;
 
-        <div class="member">
+    return;
 
-          <div class="member-top">
+  }
 
-            <div>
-              <strong>
-                ${escapeHTML(member.name)}
-              </strong>
 
-              <small>
-                ${escapeHTML(member.email)}
-              </small>
+  container.innerHTML =
+    history
+      .slice()
+      .reverse()
+      .map(
+        function (item) {
 
-              <small>
-                ${escapeHTML(roleName(member.role))}
-              </small>
+          return `
+
+            <div class="history-item">
+
+              <div class="history-top">
+
+                <span>
+                  ${escapeHtml(
+                    item.autor ||
+                    "Equipe"
+                  )}
+                </span>
+
+                <span>
+                  ${escapeHtml(
+                    item.data
+                      ? formatDate(
+                          item.data
+                        )
+                      : "—"
+                  )}
+                </span>
+
+              </div>
+
+              <p>
+                ${escapeHtml(
+                  item.texto ||
+                  ""
+                )}
+              </p>
+
             </div>
 
-          </div>
+          `;
 
-          <div class="member-actions">
-
-            ${
-              session && session.role === "dono"
-                ? `
-                  <button
-                    class="primary-btn"
-                    onclick="approveMember('${member.id}')"
-                  >
-                    Aprovar
-                  </button>
-
-                  <button
-                    class="danger-btn"
-                    onclick="rejectMember('${member.id}')"
-                  >
-                    Recusar
-                  </button>
-                `
-                : `
-                  <small style="color:var(--muted);">
-                    Apenas administrador pode aprovar.
-                  </small>
-                `
-            }
-
-          </div>
-
-        </div>
-
-      `).join("");
-
-  }
-
-
-  if (!approved.length) {
-
-    approvedContainer.innerHTML =
-      `<div class="empty">
-        Nenhum integrante aprovado.
-      </div>`;
-
-  } else {
-
-    approvedContainer.innerHTML =
-      approved.map(member => `
-
-        <div class="member">
-
-          <div class="member-top">
-
-            <div>
-
-              <strong>
-                ${escapeHTML(member.name)}
-              </strong>
-
-              <small>
-                ${escapeHTML(member.email)}
-              </small>
-
-              <small>
-                ${escapeHTML(roleName(member.role))}
-              </small>
-
-            </div>
-
-            <span class="status concluido">
-              Ativo
-            </span>
-
-          </div>
-
-        </div>
-
-      `).join("");
-
-  }
+        }
+      )
+      .join("");
 
 }
 
 
-/* =========================
-   APROVAR
-========================= */
+/* =====================================================
+   EXCLUIR
+===================================================== */
 
-function approveMember(id) {
+document
+  .getElementById(
+    "delete-request"
+  )
+  .addEventListener(
+    "click",
+    async function () {
 
-  if (!session || session.role !== "dono") {
-    alert("Somente o administrador pode aprovar integrantes.");
+      if (!selectedRequest) {
+
+        return;
+
+      }
+
+
+      const confirmed =
+        window.confirm(
+          "Excluir esta solicitação permanentemente?"
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      try {
+
+        await db
+          .collection(
+            "solicitacoes"
+          )
+          .doc(
+            selectedRequest.id
+          )
+          .delete();
+
+
+        selectedRequest =
+          null;
+
+
+        document
+          .getElementById(
+            "request-detail"
+          )
+          .classList.remove(
+            "open"
+          );
+
+
+        document.getElementById(
+          "request-list-card"
+        ).style.display =
+          "";
+
+
+        showToast(
+          "Solicitação excluída."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          firebaseErrorMessage(
+            error
+          )
+        );
+
+      }
+
+    }
+  );
+
+
+/* =====================================================
+   NAVEGAÇÃO
+===================================================== */
+
+const titles = {
+
+  dashboard: {
+
+    title:
+      "Visão geral",
+
+    subtitle:
+      "Acompanhe o fluxo de solicitações da WKORA."
+
+  },
+
+  requests: {
+
+    title:
+      "Solicitações",
+
+    subtitle:
+      "Veja e gerencie as solicitações recebidas."
+
+  },
+
+  team: {
+
+    title:
+      "Minha equipe",
+
+    subtitle:
+      "Informações sobre o acesso da equipe."
+
+  }
+
+};
+
+
+function changeView(
+  viewName
+) {
+
+  document
+    .querySelectorAll(
+      ".view"
+    )
+    .forEach(
+      function (view) {
+
+        view.classList.remove(
+          "active"
+        );
+
+      }
+    );
+
+
+  const target =
+    document.getElementById(
+      "view-" +
+      viewName
+    );
+
+
+  if (!target) {
+
     return;
-  }
-
-
-  const member =
-    team.find(
-      m => m.id === id
-    );
-
-  if (!member) return;
-
-
-  member.status = "aprovado";
-
-  member.approvedAt =
-    new Date().toISOString();
-
-
-  saveTeam();
-
-  renderAll();
-
-}
-
-
-/* =========================
-   RECUSAR
-========================= */
-
-function rejectMember(id) {
-
-  if (!session || session.role !== "dono") {
-    alert("Somente o administrador pode recusar integrantes.");
-    return;
-  }
-
-
-  const confirmed =
-    confirm(
-      "Deseja recusar este cadastro?"
-    );
-
-  if (!confirmed) return;
-
-
-  team =
-    team.filter(
-      member => member.id !== id
-    );
-
-
-  saveTeam();
-
-  renderAll();
-
-}
-
-
-/* =========================
-   RENDER GERAL
-========================= */
-
-function renderAll() {
-
-  renderDashboard();
-  renderRequests();
-  renderTeam();
-
-}
-
-
-/* =========================
-   INICIALIZAÇÃO
-========================= */
-
-function init() {
-
-  loadData();
-
-  session = getSession();
-
-  if (session) {
-
-    openPanel();
-
-  } else {
-
-    document.getElementById("gate")
-      .classList.remove("hidden");
-
-    document.getElementById("app")
-      .classList.add("hidden");
 
   }
 
+
+  target.classList.add(
+    "active"
+  );
+
+
+  document
+    .querySelectorAll(
+      ".side-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.view ===
+            viewName
+        );
+
+      }
+    );
+
+
+  document.getElementById(
+    "page-title"
+  ).textContent =
+    titles[viewName].title;
+
+
+  document.getElementById(
+    "page-subtitle"
+  ).textContent =
+    titles[viewName].subtitle;
+
+
+  sidebar.classList.remove(
+    "open"
+  );
+
+
+  window.scrollTo(
+    {
+      top: 0,
+      behavior: "smooth"
+    }
+  );
+
 }
 
 
-init();
+/* =====================================================
+   BOTÕES DE NAVEGAÇÃO
+===================================================== */
+
+document
+  .querySelectorAll(
+    "[data-view]"
+  )
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          changeView(
+            button.dataset.view
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+/* =====================================================
+   MENU MOBILE
+===================================================== */
+
+mobileMenu.addEventListener(
+  "click",
+  function () {
+
+    sidebar.classList.toggle(
+      "open"
+    );
+
+  }
+);
 
 </script>
 
